@@ -43,4 +43,10 @@ public class Test extends BaseFragmentActivity{
         super.run();
         LogUtils.showLogI("aaa");
     }
+
+    private void add(){
+        while(true){
+
+        }
+    }
 }
