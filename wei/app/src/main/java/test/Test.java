@@ -1,5 +1,6 @@
 package test;
 
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.widget.Button;
 
@@ -8,6 +9,7 @@ import com.example.base.base.BaseFragmentActivity;
 import com.example.base.utils.ConcreteWatched;
 import com.example.base.utils.LogUtils;
 import com.example.base.utils.ThreadPollUtils;
+import com.example.base.weight.ZoomImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,8 @@ public class Test extends BaseFragmentActivity{
 
     private List<Watcher> list = new ArrayList<>();
     private Button mButton;
+    private ZoomImageView mZoomImageView;
+
     @Override
     protected int initLayout() {
         return R.layout.activity_login_layout;
@@ -35,7 +39,8 @@ public class Test extends BaseFragmentActivity{
 
     @Override
     protected void initView() {
-
+        mZoomImageView = (ZoomImageView)findViewById(R.id.zoomImageView);
+        mZoomImageView.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources(),R.drawable.ic));
     }
 
     @Override
