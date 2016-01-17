@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">bao</string>
+    <string name="action_settings">设置</string>
+    <string name="action_quit">退出</string>
+    <string name="register_sended_code">send verification code to %s ,please wait for accept</string>
+    <string name="register_send_fail">send verification code fail,please check your phone number</string>
+    <string name="register_code_error">verification code error</string>
+    <string name="border_top">顶部</string>
+    <string name="border_buttom">底部</string>
+</resources>
