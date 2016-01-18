@@ -72,7 +72,7 @@ public class LruCacheUtils {
         return mMemoryCache.get(key);
     }
 
-    public static int calculateInSampleSize(BitmapFactory.Options options,
+    public int calculateInSampleSize(BitmapFactory.Options options,
                                             int reqWidth) {
         // 源图片的宽度
         final int width = options.outWidth;
@@ -85,7 +85,7 @@ public class LruCacheUtils {
         return inSampleSize;
     }
 
-    public static Bitmap decodeSampledBitmapFromResource(String pathName,
+    public Bitmap decodeSampledBitmapFromResource(String pathName,
                                                          int reqWidth) {
         // 第一次解析将inJustDecodeBounds设置为true，来获取图片大小
         final BitmapFactory.Options options = new BitmapFactory.Options();

@@ -1,4 +1,4 @@
-package com.example.base.weight;
+package com.example.base.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;

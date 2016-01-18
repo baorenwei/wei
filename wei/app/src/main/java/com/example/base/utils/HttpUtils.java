@@ -52,8 +52,8 @@ public class HttpUtils {
         InputStream is = null;
         try {
             URL uri = new URL(url);
-            URLConnection conn =  uri.openConnection();
-            HttpURLConnection connection = (HttpURLConnection)conn;
+            URLConnection conn = uri.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) conn;
             connection.setDoInput(true);
             connection.setDoOutput(true);
             connection.setConnectTimeout(5000);
@@ -69,8 +69,8 @@ public class HttpUtils {
 
         } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            if (is != null){
+        } finally {
+            if (is != null) {
                 try {
                     is.close();
                 } catch (IOException e) {
@@ -86,9 +86,9 @@ public class HttpUtils {
 
         byte[] buffer = new byte[1024];
         int len = 0;
-            while((len = is.read(buffer)) != -1){
-                outputStream.write(buffer,0,len);
-            }
+        while ((len = is.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, len);
+        }
         byte[] b = outputStream.toByteArray();
         String json = new String(b);
         outputStream.close();
@@ -120,54 +120,137 @@ public class HttpUtils {
     }
 
     //图片下载
-    public static Bitmap downLoadImage(int position,Context context){
+    public Bitmap downLoadImage(Object object, Context context) throws FileNotFoundException {
 
-//        ImageView imageView = new ImageView(HttpUtils.this);
-        LoadImageTask task = new LoadImageTask(context);
-//        String imahrUrl =  LightImage.imageThumbUrls[position];
-        Bitmap bitmap;
-//                =  LruCacheUtils.getInstance().getBitmapFromMemCache(imahrUrl);
-//        if (bitmap != null){
-//        return bitmap;
-//        }else {
-            task.execute(2);
-//        Bitmap bitmap = task.bitmap;
-//        }
+        if (object instanceof String) {
+            Bitmap bitmap = LruCacheUtils.getInstance().getBitmapFromMemoryCache((String) object);
+            if (bitmap == null) {
+                LoadUrlImageTask task = new LoadUrlImageTask(context);
+                task.execute(object);
+//                String str = task.getImagePath((String) object);
+                bitmap = LruCacheUtils.getInstance().getBitmapFromMemoryCache((String) object);
+            }
+            return bitmap;
+        } else if (object instanceof Integer) {
+            Bitmap bitmap = LruCacheUtils.getInstance().getBitmapFromMemoryCache((String) object);
+            if (bitmap == null) {
+                LoadPositionImageTask task = new LoadPositionImageTask(context);
+                task.execute(object);
+            }
+            return bitmap;
+        }
         return null;
     }
-    static class LoadImageTask extends AsyncTask<Integer,Void,Bitmap> {
+
+    class LoadUrlImageTask extends AsyncTask<Object, Void, Bitmap> {
+
+        String mImageUrl;
+        Context mContext;
+
+        LoadUrlImageTask(Context context) {
+            this.mContext = context;
+        }
+
+        @Override
+        protected Bitmap doInBackground(Object... params) {
+            mImageUrl = (String) params[0];
+            load(mImageUrl);
+            return null;
+        }
+
+        private Bitmap load(String mImageUrl) {
+            File fileImage = new File(getImagePate(mImageUrl));
+            if (!fileImage.exists()) {
+                dowmImage(mImageUrl);
+            }
+//            if (mImageUrl != null){
+//                Bitmap bitmap =  LruCacheUtils.getInstance().decodeSampledBitmapFromResource(mImageUrl,100);
+//                LruCacheUtils.getInstance().addBitmapToMemoryCache(mImageUrl,bitmap);
+//                return bitmap;
+//            }
+            return null;
+        }
+
+        private void dowmImage(String mImageUrl) {
+
+            HttpURLConnection conn = null;
+            FileOutputStream fos = null;
+            BufferedOutputStream bos = null;
+            BufferedInputStream bis = null;
+            File imageFile = null;
+            try {
+                URL url = new URL(mImageUrl);
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setDoOutput(true);
+                conn.setDoInput(true);
+                conn.setConnectTimeout(5000);
+                bis = new BufferedInputStream(conn.getInputStream());
+                imageFile = new File(getImagePate(mImageUrl));
+                LogUtils.showLogI(imageFile+"");
+                fos = new FileOutputStream(imageFile);
+                bos = new BufferedOutputStream(fos);
+                int len = 0;
+                byte[] b = new byte[1024];
+                while ((len = bis.read(b)) != -1) {
+                    bos.write(b, 0, len);
+                    bos.flush();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (bis != null) {
+                        bis.close();
+                    }
+                    if (bos != null) {
+                        bos.close();
+                    }
+                    if (fos != null) {
+                        fos.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        private String getImagePate(String mImageUrl) {
+            int lastSlashIndex = mImageUrl.lastIndexOf("/");
+            String imageName = mImageUrl.substring(lastSlashIndex + 1);
+            String imageDir = Environment.getExternalStorageDirectory().getPath() + "imageUrl";
+            File file = new File(imageDir);
+            if (!file.exists()) {
+                file.mkdir();
+            }
+            String imagePath = imageDir + imageName;
+            return imagePath;
+        }
+    }
+
+
+    class LoadPositionImageTask extends AsyncTask<Object, Void, Bitmap> {
         private String mImageUrl;
         private int position;
         Bitmap bitmap;
         Context context;
         LruCacheUtils mUtils;
-        /**
-         * 可重复使用的ImageView
-         */
-        private ImageView mImageView;
 
-        public LoadImageTask() {
+        public LoadPositionImageTask() {
         }
 
-        /**
-         * 将可重复使用的ImageView传入
-         *
-         */
-        public LoadImageTask(Context context) {
+        public LoadPositionImageTask(Context context) {
             this.context = context;
             mUtils = new LruCacheUtils();
         }
 
         @Override
-        protected Bitmap doInBackground(Integer... params) {
-            position = params[0];
+        protected Bitmap doInBackground(Object... params) {
+            position = (Integer) params[0];
             mImageUrl = LightImage.imageThumbUrls[position];
 
             Bitmap imageBitmap = mUtils.getBitmapFromMemoryCache(mImageUrl);
             if (imageBitmap == null) {
-//            Bitmap imageBitmap;
-                imageBitmap =   loadImage(mImageUrl,context);
-//                LogUtils.showLogI(imageBitmap+"");
+                imageBitmap = loadImage(mImageUrl, context);
             }
             return imageBitmap;
         }
@@ -175,12 +258,8 @@ public class HttpUtils {
         @Override
         protected void onPostExecute(Bitmap bitmap) {
             if (bitmap != null) {
-//                double ratio = bitmap.getWidth() / (columnWidth * 1.0);
-//                int scaledHeight = (int) (bitmap.getHeight() / ratio);
-//                addImage(bitmap, columnWidth, scaledHeight);
                 this.bitmap = bitmap;
             }
-//            taskCollection.remove(this);
         }
 
         /**
@@ -189,14 +268,14 @@ public class HttpUtils {
          * @param imageUrl 图片的URL地址
          * @return 加载到内存的图片。
          */
-        private Bitmap loadImage(String imageUrl,Context context) {
+        private Bitmap loadImage(String imageUrl, Context context) {
             File imageFile = new File(getImagePath(imageUrl));
             if (!imageFile.exists()) {
                 downloadImage(imageUrl);
             }
             if (imageUrl != null) {
                 Bitmap bitmap = mUtils.decodeSampledBitmapFromResource(
-                        imageUrl , 100);
+                        imageUrl, 100);
                 if (bitmap != null) {
                     mUtils.addBitmapToMemoryCache(imageUrl, bitmap);
                     return bitmap;
@@ -253,8 +332,6 @@ public class HttpUtils {
             if (imageFile != null) {
                 Bitmap bitmap = mUtils.decodeSampledBitmapFromResource(
                         imageFile.getPath(), 100);
-                LogUtils.showLogI(imageFile.getPath()+"");
-                LogUtils.showLogI(bitmap+"");
                 if (bitmap != null) {
                     mUtils.addBitmapToMemoryCache(imageUrl, bitmap);
                 }
@@ -271,14 +348,12 @@ public class HttpUtils {
             int lastSlashIndex = imageUrl.lastIndexOf("/");
             String imageName = imageUrl.substring(lastSlashIndex + 1);
             String imageDir = Environment.getExternalStorageDirectory()
-                    .getPath() + "/aImage/";
+                    .getPath() + "/positionImage/";
             File file = new File(imageDir);
             if (!file.exists()) {
                 file.mkdirs();
-                LogUtils.showLogI("到了这里");
             }
             String imagePath = imageDir + imageName;
-            LogUtils.showLogI(imagePath);
             return imagePath;
         }
 

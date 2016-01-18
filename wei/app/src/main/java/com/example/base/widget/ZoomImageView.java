@@ -1,4 +1,4 @@
-package com.example.base.weight;
+package com.example.base.widget;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -7,7 +7,6 @@ import android.graphics.Matrix;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Switch;
 
 /**
  * Created by Administrator on 2016/1/17.

@@ -28,7 +28,7 @@ public class MyProgressDialog  extends AlertDialog{
         super.onCreate(savedInstanceState);
         //getWindow().setGravity(Gravity.CENTER_HORIZONTAL);
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        setContentView(R.layout.progress_dialog);
+        setContentView(R.layout.widget_progress_dialog);
         mProgress = (ProgressBar)findViewById(R.id.progress);
         mMessageView = (TextView)findViewById(R.id.message);
         mMessageView.setText(mMessage);

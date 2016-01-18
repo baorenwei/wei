@@ -1,22 +1,23 @@
 package test;
 
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
+import android.os.Environment;
 import android.widget.Button;
 
 import com.example.administrator.bao.R;
 import com.example.base.base.BaseFragmentActivity;
-import com.example.base.utils.ConcreteWatched;
+import com.example.base.utils.FileUtils;
+import com.example.base.utils.HttpUtils;
 import com.example.base.utils.LogUtils;
-import com.example.base.utils.ThreadPollUtils;
-import com.example.base.weight.ZoomImageView;
+import com.example.base.widget.ZoomImageView;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import Interface.Watched;
 import Interface.Watcher;
-import light.LightActivity;
 
 /**
  * Created by Administrator on 2016/1/10.
@@ -39,19 +40,28 @@ public class Test extends BaseFragmentActivity{
 
     @Override
     protected void initView() {
-        mZoomImageView = (ZoomImageView)findViewById(R.id.zoomImageView);
-        mZoomImageView.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources(),R.drawable.ic));
+//        mZoomImageView.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources(),R.drawable.ic));
+        HttpUtils mUtils = new HttpUtils();
+        try {
+            Bitmap bitmap = mUtils.downLoadImage("http://img.my.csdn.net/uploads/201309/01/1378037095_7515.jpg", mContext);
+//            mZoomImageView.setImageBitmap(bitmap);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+    public static boolean hasSdcard() {
+        String status = Environment.getExternalStorageState();
+        if (status.equals(Environment.MEDIA_MOUNTED)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     public void run() {
         super.run();
         LogUtils.showLogI("aaa");
-    }
 
-    private void add(){
-        while(true){
-
-        }
     }
 }

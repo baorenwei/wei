@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 
+import com.example.administrator.bao.R;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -15,17 +17,16 @@ import java.io.IOException;
 public class FileUtils {
     private static FileUtils instabce;
 
-    public FileUtils(){
-
-    }
-
-    public static FileUtils getInstance(Context context){
-        if (instabce == null){
-            instabce = new FileUtils();
-        }
+    public FileUtils(Context context){
         mDataRootPath = context.getCacheDir().getPath();
-        return  instabce;
     }
+
+//    public static FileUtils getInstance(Context context){
+//        if (instabce == null){
+//            instabce = new FileUtils();
+//        }
+//        return  instabce;
+//    }
 
     /**
      * sd卡的根目录
@@ -64,12 +65,17 @@ public class FileUtils {
         if(!folderFile.exists()){
             folderFile.mkdir();
         }
+
+        try {
         File file = new File(path + File.separator + fileName);
-        file.createNewFile();
+//        file.createNewFile();
         FileOutputStream fos = new FileOutputStream(file);
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
         fos.flush();
         fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
