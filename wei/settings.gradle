@@ -1,1 +1,1 @@
-include ':app', ':smssdk', ':listview'
+include ':app', ':smssdk', ':listview', ':zxing'

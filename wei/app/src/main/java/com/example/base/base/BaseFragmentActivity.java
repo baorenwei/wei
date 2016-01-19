@@ -1,11 +1,19 @@
 package com.example.base.base;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.RemoteViews;
 
+import com.example.administrator.bao.R;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 
 import cn.smssdk.gui.GroupListView;
@@ -19,6 +27,7 @@ public abstract class BaseFragmentActivity extends BaseActivity implements View.
 
     private SharedPreferences.Editor mEditor;
     private SharedPreferences mSharedPreferences;
+    private ProgressDialog mDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,5 +116,41 @@ public abstract class BaseFragmentActivity extends BaseActivity implements View.
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         
+    }
+
+    //设置Notifiction
+    public void setmNotifiction(Context context, Class<?> cls,int drawable,String title,int layout,int image,String content,String time){
+
+        NotificationManager mNotificationManager = (NotificationManager)mContext.getSystemService(mContext.NOTIFICATION_SERVICE);
+        Intent intent = new Intent(this,cls);
+        PendingIntent mPendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        Notification notification = new Notification();
+        long[] vir = {0,100,300,100};
+        notification.vibrate = vir;
+        notification.icon = drawable;
+        notification.tickerText = title;
+
+        RemoteViews contentView = new RemoteViews(getPackageName(), layout);
+        contentView.setImageViewResource(R.id.noticationImageView, image);
+        contentView.setTextViewText(R.id.noticationContentTextView, content);
+        contentView.setTextViewText(R.id.noticationTimeTextView, time);
+        notification.contentView = contentView;
+
+        notification.contentIntent = mPendingIntent;
+        mNotificationManager.notify(3, notification);
+    }
+
+    //设置ProgressDialog
+    public void showDialog(){
+        if (mDialog == null){
+            mDialog = new ProgressDialog(this);
+        }
+        mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mDialog.setMessage(getResources().getString(R.string.in_the_effort));
+        mDialog.setCanceledOnTouchOutside(false);
+        mDialog.show();
+    }
+    public void dismissDialog(){
+        mDialog.dismiss();
     }
 }

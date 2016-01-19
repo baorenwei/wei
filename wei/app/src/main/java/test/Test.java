@@ -1,46 +1,49 @@
 package test;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Environment;
-import android.util.DisplayMetrics;
+import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Handler;
+import android.provider.ContactsContract;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
-import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
+import android.widget.ProgressBar;
+import android.widget.RemoteViews;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
 import com.example.administrator.bao.R;
 import com.example.base.base.BaseFragmentActivity;
-import com.example.base.utils.FileUtils;
-import com.example.base.utils.HttpUtils;
-import com.example.base.utils.LogUtils;
-import com.example.base.widget.ZoomImageView;
+import com.example.base.utils.DataUtils;
+import com.example.base.utils.MyProgressDialog;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import Interface.Watcher;
 
 /**
  * Created by Administrator on 2016/1/10.
  */
 public class Test extends BaseFragmentActivity{
 
-    private List<Watcher> list = new ArrayList<>();
     private Button mButton;
-    private ZoomImageView mZoomImageView;
     public ListView mActionBarListView;
+    public boolean mIsShow;
+
+    private int Notification_ID_BASE = 110;
 
     @Override
     protected int initLayout() {
@@ -62,8 +65,6 @@ public class Test extends BaseFragmentActivity{
     @Override
     protected void initData() {
 
-        setRightTextView("添加");
-        addListViewItem();
     }
 
     private void addListViewItem(){

@@ -2,6 +2,7 @@ package com.example.base.base;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import com.example.administrator.bao.R;
 import com.example.base.utils.LogUtils;
 import com.example.base.utils.NetUtils;
+import com.google.zxing.client.android.ScanQRActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +46,8 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
     public Context mContext;
     public boolean isConneted;
     private int mMenuResid;
-    public boolean mIsShow;
+
+    private static final int REQUEST_CODE = 765;
 
     private final static List<Activity> mActivitys = new ArrayList<Activity>();
 
@@ -242,6 +245,10 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
 
         int id = item.getItemId();
         switch (id){
+            case R.id.action_scan:
+                Intent intent = new Intent(this, ScanQRActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
+                break;
             case R.id.action_settings:
                 break;
             case R.id.action_quit:
@@ -250,6 +257,16 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE ){
+
+            String result = data.getStringExtra(ScanQRActivity.EXTRA_RESULT);
+            LogUtils.showLogI(result);
+        }
     }
 
     @Override
