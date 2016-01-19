@@ -5,13 +5,18 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.view.KeyEvent;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.example.administrator.bao.R;
@@ -19,7 +24,9 @@ import com.example.base.utils.LogUtils;
 import com.example.base.utils.NetUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import Interface.Watcher;
 
@@ -37,19 +44,21 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
     public Context mContext;
     public boolean isConneted;
     private int mMenuResid;
+    public boolean mIsShow;
 
     private final static List<Activity> mActivitys = new ArrayList<Activity>();
-    public com.example.base.utils.InnUtils<Activity> mListActivity = new com.example.base.utils.InnUtils<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_light_layout);
+        init();
+    }
+    private void init(){
         mContext = getApplication();
-
         mActivitys.add(this);
         setupActionBar(R.layout.action_bar);
+        setMenu(R.menu.menu_main);
     }
 
     private void setupActionBar(int layoutId){
@@ -66,14 +75,12 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
             mRightLeftTextView = (TextView) actionBar.getCustomView().findViewById(R.id.rightLeftTextView);
             mRightTextView = (TextView) actionBar.getCustomView().findViewById(R.id.rightTextView);
 
-
             mLeftTextView.setOnClickListener(this);
             mTitltTextView.setOnClickListener(this);
             mRightLeftTextView.setOnClickListener(this);
             mRightTextView.setOnClickListener(this);
         }
     }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -145,6 +152,14 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
         overridePendingTransition(R.anim.abc_slide_in_left, R.anim.abc_slide_out_right);
     }
 
+    //获取手机屏幕属性
+    public int getDisplayMetrics(){
+        DisplayMetrics metric = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metric);
+        int width = metric.widthPixels;
+        return width;
+    }
+
     @Override
     public void finish() {
         super.finish();
@@ -211,16 +226,16 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
         return null;
     }
 
-//    public void setMenu(int menuResid){
-//        this.mMenuResid = menuResid;
-//    }
-//
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//
-//        getMenuInflater().inflate(0, menu);
-//        return true;
-//    }
+    public void setMenu(int menuResid){
+        this.mMenuResid = menuResid;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(mMenuResid, menu);
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -234,13 +249,11 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
                 clearTask();
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onClick(View v) {
-
     }
 
     @Override

@@ -14,12 +14,11 @@ import cn.smssdk.gui.GroupListView;
  * Created by Administrator on 2016/1/2.
  *
  */
-public abstract class BaseFragmentActivity extends com.example.base.base.BaseActivity implements View.OnClickListener ,
-        View.OnLongClickListener,AdapterView.OnItemSelectedListener,GroupListView.OnItemClickListener,Runnable,AbsListView.OnScrollListener, PullToRefreshBase.OnRefreshListener  {
+public abstract class BaseFragmentActivity extends BaseActivity implements View.OnClickListener ,
+        View.OnLongClickListener,AdapterView.OnItemSelectedListener,AdapterView.OnItemClickListener,Runnable,AbsListView.OnScrollListener, PullToRefreshBase.OnRefreshListener  {
 
     private SharedPreferences.Editor mEditor;
     private SharedPreferences mSharedPreferences;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,10 +87,6 @@ public abstract class BaseFragmentActivity extends com.example.base.base.BaseAct
 
     }
 
-    @Override
-    public void onItemClick(GroupListView parent, View view, int group, int position) {
-
-    }
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -107,5 +102,10 @@ public abstract class BaseFragmentActivity extends com.example.base.base.BaseAct
     public void onRefresh(PullToRefreshBase refreshView) {
 
 
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        
     }
 }
