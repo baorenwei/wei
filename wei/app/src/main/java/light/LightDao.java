@@ -33,7 +33,6 @@ public class LightDao {
         values.put(LightMeteDate.EMAIL, enail);
         values.put(LightMeteDate.DATE, data);
         values.put(LightMeteDate.SEX, sex);
-        LogUtils.showLogI("到了這裏");
         mResolver.insert(LightMeteDate.CONTENT_URI, values);
 
         Cursor c = mResolver.query(LightMeteDate.CONTENT_URI, null, LightMeteDate._ID + "=?", new String[]{"1"}, null);
@@ -43,32 +42,30 @@ public class LightDao {
         } else {
             mResolver.insert(LightMeteDate.CONTENT_URI, values);
         }
-            String userName = c.getString(c.getColumnIndex(LightMeteDate.USERNAME));
-            String sexs = c.getString(c.getColumnIndex(LightMeteDate.SEX));
-            String email = c.getString(c.getColumnIndex(LightMeteDate.EMAIL));
-            String date = c.getString(c.getColumnIndex(LightMeteDate.DATE));
+        String userName = c.getString(c.getColumnIndex(LightMeteDate.USERNAME));
+        String sexs = c.getString(c.getColumnIndex(LightMeteDate.SEX));
+        String email = c.getString(c.getColumnIndex(LightMeteDate.EMAIL));
+        String date = c.getString(c.getColumnIndex(LightMeteDate.DATE));
         c.close();
         return new LightBen(userName, sexs, email, date);
     }
 
     //解析json数据
-    public  LightBen getJsonData(Context context, LightCallBack callback) {
+    public LightBen getJsonData(Context context, LightCallBack callback) {
 
-//        Map<String,String> map = new HashMap<>();
-//        map.put("mobile", "13316584270");
-//        map.put("userName", "aaa");
-//        map.put("registerCity", "深圳");
-//        map.put("access_token", "932d9439-00e4-4ec5-84ac-de2e9c6fa5ce&userId");
-//        String json = HttpUtils.httpPost(Conn.REGIST,map,"POST");
-//        try {
-//            JSONObject obj = new JSONObject(json);
-//            String access_token =  obj.getString("registerCity");
-//            LogUtils.showLogI(access_token);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-        LightBen ben = updateData(context, "bao", "bao", "bao", "bao");
-        callback.complete(ben);
+        Map<String, Object> map = new HashMap<>();
+        map.put("access_token", "932d9439-00e4-4ec5-84ac-de2e9c6fa5ce");
+        map.put("email", "15986773816@163.com");
+        String json = HttpUtils.httpPost(Conn.REGIST, map, "POST");
+        try {
+            JSONObject obj = new JSONObject(json);
+//            String access_token = obj.getString("access_token");
+            LogUtils.showLogI(obj + "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//        LightBen ben = updateData(context, "bao", "bao", "bao", "bao");
+//        callback.complete(ben);
         return null;
     }
 }

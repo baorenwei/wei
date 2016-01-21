@@ -16,6 +16,7 @@ import org.apache.http.params.CoreConnectionPNames;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -27,6 +28,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -47,10 +49,11 @@ public class HttpUtils {
      * @param params
      * @return
      */
-    public static String httpPost(String url, Map<String, String> params, String str) {
+    public static String httpPost(String url, Map<String, Object> params, String str) {
 
         InputStream is = null;
         try {
+            StringBuffer sb = paseMap(params);
             URL uri = new URL(url);
             URLConnection conn = uri.openConnection();
             HttpURLConnection connection = (HttpURLConnection) conn;
@@ -58,12 +61,17 @@ public class HttpUtils {
             connection.setDoOutput(true);
             connection.setConnectTimeout(5000);
             connection.setUseCaches(false);
-            connection.setRequestProperty("Content-type", "application/x-java-serialized-object");
-            // 设定请求的方法为"POST"，默认是GET
+            connection.setRequestProperty("Content-type", "application/x-www-form-urlencoded");
+            connection.setRequestProperty("accept", "*/*");
+            connection.setRequestProperty("connection", "Keep-Alive");
+//            connection.setRequestProperty("Content-Length", String
+//                    .valueOf(sb.length()));
             connection.setRequestMethod(str);
             connection.connect();   //请求连接
-            byte[] bytes = params.toString().getBytes();
+
+            byte[] bytes = sb.toString().getBytes();
             connection.getOutputStream().write(bytes);
+
             is = connection.getInputStream();
             return readInput(is);
 
@@ -79,6 +87,22 @@ public class HttpUtils {
             }
         }
         return null;
+    }
+
+    private static StringBuffer paseMap(Map<String, Object> params) {
+        StringBuffer sb = null;
+        if (sb == null) {
+            sb = new StringBuffer();
+        }
+        Iterator it = params.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry element = (Map.Entry) it.next();
+            sb.append(element.getKey());
+            sb.append("=");
+            sb.append(element.getValue());
+            sb.append("&");
+        }
+        return sb;
     }
 
     private static String readInput(InputStream is) throws IOException {
@@ -97,7 +121,6 @@ public class HttpUtils {
     }
 
     public void checkVisibility() {
-
         int len = LightImage.imageThumbUrls.length;
 
         for (int i = 0; i < len; i++) {
@@ -186,7 +209,7 @@ public class HttpUtils {
                 conn.setConnectTimeout(5000);
                 bis = new BufferedInputStream(conn.getInputStream());
                 imageFile = new File(getImagePate(mImageUrl));
-                LogUtils.showLogI(imageFile+"");
+                LogUtils.showLogI(imageFile + "");
                 fos = new FileOutputStream(imageFile);
                 bos = new BufferedOutputStream(fos);
                 int len = 0;

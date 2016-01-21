@@ -23,11 +23,14 @@ import com.example.base.base.BaseFragmentActivity;
 import com.example.base.utils.FileUtils;
 import com.example.base.utils.HttpUtils;
 import com.example.base.utils.LogUtils;
+import com.example.base.utils.StringUtil;
 import com.example.base.utils.ThreadPollUtils;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshExpandableListView;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,23 +72,23 @@ public class LightActivity extends BaseFragmentActivity {
 
     @Override
     protected void initView() {
-        textView = (TextView)findViewById(R.id.textView);
-        commit = (Button)findViewById(R.id.commit);
-        button = (Button)findViewById(R.id.button);
-        mListView =  (PullToRefreshListView)findViewById(R.id.listView);
-        mLinearLayout  =  (RelativeLayout)findViewById(R.id.linearLayout);
+        textView = (TextView) findViewById(R.id.textView);
+        commit = (Button) findViewById(R.id.commit);
+        button = (Button) findViewById(R.id.button);
+        mListView = (PullToRefreshListView) findViewById(R.id.listView);
+        mLinearLayout = (RelativeLayout) findViewById(R.id.linearLayout);
 
         mAdapter = new LightAdapter<String>(mContext);
         mList = new ArrayList<>();
-        for (int i = 0; i < LightImage.imageThumbUrls.length; i ++){
-            mList.add(i+"");
+        for (int i = 0; i < 10; i++) {
+            mList.add(i + "");
         }
         mAdapter.setList(mList);
         mListView.setAdapter(mAdapter);
         mListView.setOnRefreshListener(this);
         mListView.setMode(PullToRefreshBase.Mode.BOTH);  //下拉和上拉都会执行onRefresh()中的方法了。
-
     }
+
     @Override
     protected void initData() {
 
@@ -98,14 +101,14 @@ public class LightActivity extends BaseFragmentActivity {
     }
 
 
-    private void getMetaData(){
+    private void getMetaData() {
         String userName = null;
         String sexs = null;
         String email = null;
         String date = null;
         mResolver = mContext.getContentResolver();
         Cursor c = mResolver.query(LightMeteDate.CONTENT_URI, null, LightMeteDate._ID + "=?", new String[]{"1"}, null);
-        if (c.moveToFirst()){
+        if (c.moveToFirst()) {
             userName = c.getString(c.getColumnIndex(LightMeteDate.USERNAME));
             sexs = c.getString(c.getColumnIndex(LightMeteDate.SEX));
             email = c.getString(c.getColumnIndex(LightMeteDate.EMAIL));
@@ -113,6 +116,7 @@ public class LightActivity extends BaseFragmentActivity {
         }
         c.close();
         textView.setText("userName--" + userName + "--sexs--" + sexs + "--email--" + email + "--date--" + date);
+
     }
 
     @Override
@@ -124,10 +128,9 @@ public class LightActivity extends BaseFragmentActivity {
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        switch(v.getId()){
+        switch (v.getId()) {
             case R.id.commit:
 //                textView.setText("userName--"+ben.getUserName()+"--sexs--"+ben.getSex()+"--email--"+ben.getEmail()+"--date--"+ben.getData());
-                getJsonData();
                 break;
             case R.id.button:
                 Intent intent = new Intent(mContext, DoorActivity.class);
@@ -136,11 +139,11 @@ public class LightActivity extends BaseFragmentActivity {
         }
     }
 
-    private void getJsonData(){
+    private void getJsonData() {
         new LightDao().getJsonData(mContext, new LightCallBack() {
             @Override
             public void complete(LightBen ben) {
-                textView.setText("userName--"+ben.getUserName()+"--sexs--"+ben.getSex()+"--email--"+ben.getEmail()+"--date--"+ben.getData());
+//                textView.setText("userName--"+ben.getUserName()+"--sexs--"+ben.getSex()+"--email--"+ben.getEmail()+"--date--"+ben.getData());
             }
 
             @Override
@@ -153,6 +156,7 @@ public class LightActivity extends BaseFragmentActivity {
     @Override
     public void run() {
         super.run();
+//        getJsonData();
     }
 
     @Override
@@ -166,20 +170,20 @@ public class LightActivity extends BaseFragmentActivity {
     public void onRefresh(PullToRefreshBase refreshView) {
         super.onRefresh(refreshView);
 
-            if (!mListView.isRefreshing()){
-                new Handler().postAtTime(new Runnable() {
-                    @Override
-                    public void run() {
-                        mListView.onRefreshComplete();
-                    }
-                },1500);
-            }
+        if (!mListView.isRefreshing()) {
+            new Handler().postAtTime(new Runnable() {
+                @Override
+                public void run() {
+                    mListView.onRefreshComplete();
+                }
+            }, 1500);
+        }
 
-        if (refreshView.isHeaderShown()){
+        if (refreshView.isHeaderShown()) {
             Toast.makeText(mContext, "下拉刷新", Toast.LENGTH_SHORT).show();
             //下拉刷新 业务代码
-        }else {
-            Toast.makeText(mContext, "上拉加载更多",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(mContext, "上拉加载更多", Toast.LENGTH_SHORT).show();
             //上拉加载更多 业务代码
         }
 

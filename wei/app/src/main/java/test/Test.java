@@ -1,35 +1,17 @@
 package test;
 
-import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Handler;
-import android.provider.ContactsContract;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.RemoteViews;
 import android.widget.SimpleAdapter;
 
 import com.example.administrator.bao.R;
 import com.example.base.base.BaseFragmentActivity;
-import com.example.base.utils.DataUtils;
-import com.example.base.utils.MyProgressDialog;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,13 +19,11 @@ import java.util.Map;
 /**
  * Created by Administrator on 2016/1/10.
  */
-public class Test extends BaseFragmentActivity{
+public class Test extends BaseFragmentActivity {
 
     private Button mButton;
     public ListView mActionBarListView;
     public boolean mIsShow;
-
-    private int Notification_ID_BASE = 110;
 
     @Override
     protected int initLayout() {
@@ -67,43 +47,44 @@ public class Test extends BaseFragmentActivity{
 
     }
 
-    private void addListViewItem(){
-        String[] titles = {"title1", "title2", "title3","title4", "title5", "title6"};
-        int[] drawableIds = {R.drawable.ic,R.drawable.ic,R.drawable.ic,
-                R.drawable.ic,R.drawable.ic,R.drawable.ic};
+    private void addListViewItem() {
+        String[] titles = {"title1", "title2", "title3", "title4", "title5", "title6"};
+        int[] drawableIds = {R.drawable.ic, R.drawable.ic, R.drawable.ic,
+                R.drawable.ic, R.drawable.ic, R.drawable.ic};
 
         setListViewItem(drawableIds, titles);
     }
-//    设置ListView Item的数据
-    public void setListViewItem(int[] drawable,String[] titles){
-        List<Map<String,Object>> mListViewList = new ArrayList<>();
-        Map<String, Object> map  = new HashMap<>();
-        for(int i=0;i<titles.length;i++){
+
+    //    设置ListView Item的数据
+    public void setListViewItem(int[] drawable, String[] titles) {
+        List<Map<String, Object>> mListViewList = new ArrayList<>();
+        Map<String, Object> map = new HashMap<>();
+        for (int i = 0; i < titles.length; i++) {
             map.put("title", titles[i]);
             map.put("drawable", drawable[i]);
             mListViewList.add(map);
         }
-        mActionBarListView = (ListView)findViewById(R.id.actionBarListView);
+//        mActionBarListView = (ListView) findViewById(R.id.actionBarListView);
         SimpleAdapter adapter = new SimpleAdapter(this, mListViewList, R.layout.widget_action_bar_listview_item,
-                new String[] {"title","drawable"},
-                new int[] {R.id.actionBarTextView,R.id.actionBarImageView});
+                new String[]{"title", "drawable"},
+                new int[]{R.id.actionBarTextView, R.id.actionBarImageView});
         mActionBarListView.setAdapter(adapter);
         mActionBarListView.setOnItemClickListener(this);
     }
 
     //显示ListView
-    public void visibleListView(){
+    public void visibleListView() {
         AnimationSet set = new AnimationSet(true);
-        ScaleAnimation scaleAnimation = new ScaleAnimation(0,0.1f,0,0.1f, Animation.RELATIVE_TO_SELF,1.0f,Animation.RELATIVE_TO_SELF,0);
+        ScaleAnimation scaleAnimation = new ScaleAnimation(0, 0.1f, 0, 0.1f, Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0);
         scaleAnimation.setDuration(10);
         set.addAnimation(scaleAnimation);
         mActionBarListView.startAnimation(set);
     }
 
     //隐藏ListView
-    public void gomeListView(){
+    public void gomeListView() {
         AnimationSet set = new AnimationSet(true);
-        ScaleAnimation scaleAnimation = new ScaleAnimation(1f,0,1f,0, Animation.RELATIVE_TO_SELF,1.0f,Animation.RELATIVE_TO_SELF,0);
+        ScaleAnimation scaleAnimation = new ScaleAnimation(1f, 0, 1f, 0, Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0);
         scaleAnimation.setDuration(500);
         set.addAnimation(scaleAnimation);
         set.setFillAfter(true);
@@ -113,7 +94,7 @@ public class Test extends BaseFragmentActivity{
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.rightTextView:
                 if (mIsShow == true) {
                     gomeListView();
