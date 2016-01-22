@@ -24,10 +24,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.security.Key;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -143,29 +145,30 @@ public class HttpUtils {
     }
 
     //图片下载
-    public Bitmap downLoadImage(Object object, Context context) throws FileNotFoundException {
+    public static void downLoadImage(Object object, Context context) throws FileNotFoundException {
 
         if (object instanceof String) {
             Bitmap bitmap = LruCacheUtils.getInstance().getBitmapFromMemoryCache((String) object);
             if (bitmap == null) {
-                LoadUrlImageTask task = new LoadUrlImageTask(context);
+                LoadUrlImageTask task = null;
+                if (task == null) {
+                    task = new LoadUrlImageTask(context);
+                }
                 task.execute(object);
-//                String str = task.getImagePath((String) object);
-                bitmap = LruCacheUtils.getInstance().getBitmapFromMemoryCache((String) object);
             }
-            return bitmap;
         } else if (object instanceof Integer) {
-            Bitmap bitmap = LruCacheUtils.getInstance().getBitmapFromMemoryCache((String) object);
+            Bitmap bitmap = LruCacheUtils.getInstance().getBitmapFromMemoryCache(LightImage.imageThumbUrls[(Integer) object]);
             if (bitmap == null) {
-                LoadPositionImageTask task = new LoadPositionImageTask(context);
-                task.execute(object);
+                LoadPositionImageTask task = null;
+                if (task == null) {
+                    task = new LoadPositionImageTask(context);
+                    task.execute(object);
+                }
             }
-            return bitmap;
         }
-        return null;
     }
 
-    class LoadUrlImageTask extends AsyncTask<Object, Void, Bitmap> {
+    static class LoadUrlImageTask extends AsyncTask<Object, Void, Bitmap> {
 
         String mImageUrl;
         Context mContext;
@@ -177,20 +180,31 @@ public class HttpUtils {
         @Override
         protected Bitmap doInBackground(Object... params) {
             mImageUrl = (String) params[0];
-            load(mImageUrl);
-            return null;
+            Bitmap imageBitmap = LruCacheUtils.getInstance().getBitmapFromMemoryCache(mImageUrl);
+            if (imageBitmap == null) {
+                imageBitmap = load(mImageUrl);
+            }
+            return imageBitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            super.onPostExecute(bitmap);
+            if (bitmap != null) {
+                LruCacheUtils.getInstance().addBitmapToMemoryCache(mImageUrl, bitmap);
+            }
         }
 
         private Bitmap load(String mImageUrl) {
-            File fileImage = new File(getImagePate(mImageUrl));
+            File fileImage = new File(getImagePath(mImageUrl));
             if (!fileImage.exists()) {
                 dowmImage(mImageUrl);
             }
-//            if (mImageUrl != null){
-//                Bitmap bitmap =  LruCacheUtils.getInstance().decodeSampledBitmapFromResource(mImageUrl,100);
-//                LruCacheUtils.getInstance().addBitmapToMemoryCache(mImageUrl,bitmap);
-//                return bitmap;
-//            }
+            if (mImageUrl != null) {
+                Bitmap bitmap = LruCacheUtils.getInstance().decodeSampledBitmapFromResource(fileImage.getPath(), 100);
+                LruCacheUtils.getInstance().addBitmapToMemoryCache(mImageUrl, bitmap);
+                return bitmap;
+            }
             return null;
         }
 
@@ -208,8 +222,7 @@ public class HttpUtils {
                 conn.setDoInput(true);
                 conn.setConnectTimeout(5000);
                 bis = new BufferedInputStream(conn.getInputStream());
-                imageFile = new File(getImagePate(mImageUrl));
-                LogUtils.showLogI(imageFile + "");
+                imageFile = new File(getImagePath(mImageUrl));
                 fos = new FileOutputStream(imageFile);
                 bos = new BufferedOutputStream(fos);
                 int len = 0;
@@ -235,15 +248,25 @@ public class HttpUtils {
                     e.printStackTrace();
                 }
             }
+            if (imageFile != null) {
+                Bitmap bitmap = LruCacheUtils.getInstance().decodeSampledBitmapFromResource(
+                        imageFile.getPath(), 100);
+                if (bitmap != null) {
+                    LruCacheUtils.getInstance().addBitmapToMemoryCache(mImageUrl, bitmap);
+                }
+            }
         }
 
-        private String getImagePate(String mImageUrl) {
-            int lastSlashIndex = mImageUrl.lastIndexOf("/");
-            String imageName = mImageUrl.substring(lastSlashIndex + 1);
-            String imageDir = Environment.getExternalStorageDirectory().getPath() + "imageUrl";
+        private String getImagePath(String imageUrl) {
+            int lastSlashIndex = imageUrl.lastIndexOf("/");
+            String imageName = imageUrl.substring(lastSlashIndex + 1);
+            String imageDir = Environment.getExternalStorageDirectory()
+                    .getPath() + "/photoImage/";
+            imageDir.trim();
             File file = new File(imageDir);
+            boolean is = file.exists();
             if (!file.exists()) {
-                file.mkdir();
+                file.mkdirs();
             }
             String imagePath = imageDir + imageName;
             return imagePath;
@@ -251,27 +274,20 @@ public class HttpUtils {
     }
 
 
-    class LoadPositionImageTask extends AsyncTask<Object, Void, Bitmap> {
+    static class LoadPositionImageTask extends AsyncTask<Object, Void, Bitmap> {
         private String mImageUrl;
         private int position;
-        Bitmap bitmap;
         Context context;
-        LruCacheUtils mUtils;
-
-        public LoadPositionImageTask() {
-        }
 
         public LoadPositionImageTask(Context context) {
             this.context = context;
-            mUtils = new LruCacheUtils();
         }
 
         @Override
         protected Bitmap doInBackground(Object... params) {
             position = (Integer) params[0];
             mImageUrl = LightImage.imageThumbUrls[position];
-
-            Bitmap imageBitmap = mUtils.getBitmapFromMemoryCache(mImageUrl);
+            Bitmap imageBitmap = LruCacheUtils.getInstance().getBitmapFromMemoryCache(mImageUrl);
             if (imageBitmap == null) {
                 imageBitmap = loadImage(mImageUrl, context);
             }
@@ -281,7 +297,7 @@ public class HttpUtils {
         @Override
         protected void onPostExecute(Bitmap bitmap) {
             if (bitmap != null) {
-                this.bitmap = bitmap;
+                LruCacheUtils.getInstance().addBitmapToMemoryCache(mImageUrl, bitmap);
             }
         }
 
@@ -296,13 +312,11 @@ public class HttpUtils {
             if (!imageFile.exists()) {
                 downloadImage(imageUrl);
             }
-            if (imageUrl != null) {
-                Bitmap bitmap = mUtils.decodeSampledBitmapFromResource(
-                        imageUrl, 100);
-                if (bitmap != null) {
-                    mUtils.addBitmapToMemoryCache(imageUrl, bitmap);
-                    return bitmap;
-                }
+            if (mImageUrl != null) {
+                Bitmap bitmap = LruCacheUtils.getInstance().decodeSampledBitmapFromResource(imageFile.getPath(), 100);
+                LruCacheUtils.getInstance().addBitmapToMemoryCache(mImageUrl, bitmap);
+                bitmap = LruCacheUtils.getInstance().getBitmapFromMemoryCache(mImageUrl);
+                return bitmap;
             }
             return null;
         }
@@ -353,10 +367,10 @@ public class HttpUtils {
                 }
             }
             if (imageFile != null) {
-                Bitmap bitmap = mUtils.decodeSampledBitmapFromResource(
+                Bitmap bitmap = LruCacheUtils.getInstance().decodeSampledBitmapFromResource(
                         imageFile.getPath(), 100);
                 if (bitmap != null) {
-                    mUtils.addBitmapToMemoryCache(imageUrl, bitmap);
+                    LruCacheUtils.getInstance().addBitmapToMemoryCache(imageUrl, bitmap);
                 }
             }
         }
@@ -371,7 +385,7 @@ public class HttpUtils {
             int lastSlashIndex = imageUrl.lastIndexOf("/");
             String imageName = imageUrl.substring(lastSlashIndex + 1);
             String imageDir = Environment.getExternalStorageDirectory()
-                    .getPath() + "/positionImage/";
+                    .getPath() + "/Photo/";
             File file = new File(imageDir);
             if (!file.exists()) {
                 file.mkdirs();

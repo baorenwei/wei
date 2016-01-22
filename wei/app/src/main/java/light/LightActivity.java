@@ -7,13 +7,17 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.Handler;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +27,7 @@ import com.example.base.base.BaseFragmentActivity;
 import com.example.base.utils.FileUtils;
 import com.example.base.utils.HttpUtils;
 import com.example.base.utils.LogUtils;
+import com.example.base.utils.LruCacheUtils;
 import com.example.base.utils.StringUtil;
 import com.example.base.utils.ThreadPollUtils;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -31,6 +36,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +49,6 @@ import door.DoorActivity;
  */
 public class LightActivity extends BaseFragmentActivity {
     private TextView mTextView;
-    ImageView mInageView;
     private ContentResolver mResolver;
     private LigthSQLiteOpenHelper dBlite;
     private Uri mLightUri;
@@ -78,15 +83,21 @@ public class LightActivity extends BaseFragmentActivity {
         mListView = (PullToRefreshListView) findViewById(R.id.listView);
         mLinearLayout = (RelativeLayout) findViewById(R.id.linearLayout);
 
+
         mAdapter = new LightAdapter<String>(mContext);
         mList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < LightImage.imageThumbUrls.length; i++) {
             mList.add(i + "");
         }
         mAdapter.setList(mList);
+        mListView.getRefreshableView();
+//        View header = LayoutInflater.from(mContext).inflate(R.layout.widget_listview_header_layout,mListView,false);
+//        ListView lv =  mListView.getRefreshableView();
+//        lv.addHeaderView(header);
         mListView.setAdapter(mAdapter);
         mListView.setOnRefreshListener(this);
         mListView.setMode(PullToRefreshBase.Mode.BOTH);  //下拉和上拉都会执行onRefresh()中的方法了。
+        mListView.setOnScrollListener(this);
     }
 
     @Override
@@ -97,7 +108,6 @@ public class LightActivity extends BaseFragmentActivity {
         button.setOnClickListener(this);
         mListView.setOnScrollListener(this);
         getMetaData();
-
     }
 
 
@@ -117,12 +127,6 @@ public class LightActivity extends BaseFragmentActivity {
         c.close();
         textView.setText("userName--" + userName + "--sexs--" + sexs + "--email--" + email + "--date--" + date);
 
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-//        mResolver.unregisterContentObserver(mObserver);
     }
 
     @Override
@@ -163,7 +167,17 @@ public class LightActivity extends BaseFragmentActivity {
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         super.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
 
-//        this.bitmap = HttpUtils.downLoadImage(firstVisibleItem,mContext);
+        try {
+//            LogUtils.showLogI(firstVisibleItem+"----firstVisibleItem");
+            HttpUtils.downLoadImage(firstVisibleItem, mContext);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+        super.onScrollStateChanged(view, scrollState);
     }
 
     @Override
