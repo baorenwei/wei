@@ -1,13 +1,13 @@
 <resources>
-    <string name="app_name">bao</string>
-    <string name="action_settings">设置</string>
-    <string name="action_quit">退出</string>
-    <string name="action_scan">扫一扫</string> new message
-    <string name="new_message">新消息</string>
+    <string name="app_name">Bao</string>
+    <string name="action_settings">Setting</string>
+    <string name="action_quit">Exit</string>
+    <string name="action_scan">Scan</string> new message
+    <string name="new_message">New message</string>
     <string name="register_sended_code">send verification code to %s ,please wait for accept</string>
     <string name="register_send_fail">send verification code fail,please check your phone number</string>
     <string name="register_code_error">verification code error</string>
-    <string name="border_top">顶部</string>
-    <string name="border_buttom">底部</string>
-    <string name="in_the_effort">努力中</string>
+    <string name="border_top">Top</string>
+    <string name="border_buttom">Buttom</string>
+    <string name="in_the_effort">In the effort ...</string>
 </resources>

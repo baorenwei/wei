@@ -6,9 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.example.administrator.bao.R;
 import com.example.base.base.MyBaseAdapter;
@@ -17,19 +14,22 @@ import com.example.base.utils.LogUtils;
 import com.example.base.utils.LruCacheUtils;
 
 import java.io.FileNotFoundException;
-import java.util.List;
 
 /**
  * Created by Administrator on 2016/1/14.
  */
 public class LightAdapter<String> extends MyBaseAdapter {
 
-    LayoutInflater mInfalter;
-    Context mContext;
+    private LayoutInflater mInfalter;
+    private Context mContext;
+    private Bitmap mBitmap;
 
     LightAdapter(Context mContext) {
         mInfalter = LayoutInflater.from(mContext);
         this.mContext = mContext;
+    }
+    public  void setBitmap(Bitmap bitmap){
+        this.mBitmap = bitmap;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class LightAdapter<String> extends MyBaseAdapter {
         ViewHolder mHolder = null;
         if (convertView == null) {
             mHolder = new ViewHolder();
-            convertView = mInfalter.inflate(R.layout.activity_resigt_layout, null);
+            convertView = mInfalter.inflate(R.layout.widget_light_adapter_layout, null);
             mHolder.mInageView = (ImageView) convertView.findViewById(R.id.imageView);
             convertView.setTag(mHolder);
         } else {
@@ -49,14 +49,11 @@ public class LightAdapter<String> extends MyBaseAdapter {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        Bitmap bit = LruCacheUtils.getInstance().getBitmapFromMemoryCache(LightImage.imageThumbUrls[position]);
-        LogUtils.showLogI(bit + "");
-        if (bit == null) {
+        if (mBitmap == null) {
             mHolder.mInageView.setImageResource(R.drawable.smssdk_search_icon);
         } else {
-            mHolder.mInageView.setImageBitmap(bit);
+            mHolder.mInageView.setImageBitmap(mBitmap);
         }
-        notifyDataSetChanged();
         return convertView;
     }
 

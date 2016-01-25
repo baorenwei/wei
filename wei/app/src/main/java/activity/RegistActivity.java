@@ -36,7 +36,7 @@ public class RegistActivity extends BaseFragmentActivity {
 
     @Override
     protected int initLayout() {
-        return R.layout.activity_resigt_layout;
+        return R.layout.widget_light_adapter_layout;
     }
 
     protected void initView() {

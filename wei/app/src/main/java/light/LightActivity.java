@@ -2,6 +2,7 @@ package light;
 
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -9,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,8 +40,10 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import Interface.LightCallBack;
 import door.DoorActivity;
@@ -48,7 +52,7 @@ import door.DoorActivity;
  * Created by Administrator on 2016/1/10.
  */
 public class LightActivity extends BaseFragmentActivity {
-    private TextView mTextView;
+    private  TextView mTextView;
     private ContentResolver mResolver;
     private LigthSQLiteOpenHelper dBlite;
     private Uri mLightUri;
@@ -56,6 +60,7 @@ public class LightActivity extends BaseFragmentActivity {
     Button button;
     RelativeLayout mLinearLayout;
     TextView textView;
+    ImageView mImageView;
 
     List<String> mList;
     PullToRefreshListView mListView;
@@ -82,6 +87,7 @@ public class LightActivity extends BaseFragmentActivity {
         button = (Button) findViewById(R.id.button);
         mListView = (PullToRefreshListView) findViewById(R.id.listView);
         mLinearLayout = (RelativeLayout) findViewById(R.id.linearLayout);
+        mImageView = (ImageView) findViewById(R.id.mImageView);
 
 
         mAdapter = new LightAdapter<String>(mContext);
@@ -91,9 +97,6 @@ public class LightActivity extends BaseFragmentActivity {
         }
         mAdapter.setList(mList);
         mListView.getRefreshableView();
-//        View header = LayoutInflater.from(mContext).inflate(R.layout.widget_listview_header_layout,mListView,false);
-//        ListView lv =  mListView.getRefreshableView();
-//        lv.addHeaderView(header);
         mListView.setAdapter(mAdapter);
         mListView.setOnRefreshListener(this);
         mListView.setMode(PullToRefreshBase.Mode.BOTH);  //下拉和上拉都会执行onRefresh()中的方法了。
@@ -108,6 +111,9 @@ public class LightActivity extends BaseFragmentActivity {
         button.setOnClickListener(this);
         mListView.setOnScrollListener(this);
         getMetaData();
+
+        mImageView.setImageResource(R.drawable.logo);
+
     }
 
 
@@ -127,20 +133,6 @@ public class LightActivity extends BaseFragmentActivity {
         c.close();
         textView.setText("userName--" + userName + "--sexs--" + sexs + "--email--" + email + "--date--" + date);
 
-    }
-
-    @Override
-    public void onClick(View v) {
-        super.onClick(v);
-        switch (v.getId()) {
-            case R.id.commit:
-//                textView.setText("userName--"+ben.getUserName()+"--sexs--"+ben.getSex()+"--email--"+ben.getEmail()+"--date--"+ben.getData());
-                break;
-            case R.id.button:
-                Intent intent = new Intent(mContext, DoorActivity.class);
-                startActivity(intent);
-                break;
-        }
     }
 
     private void getJsonData() {
@@ -163,43 +155,26 @@ public class LightActivity extends BaseFragmentActivity {
 //        getJsonData();
     }
 
+    Boolean mIsShow;
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         super.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
 
-        try {
-//            LogUtils.showLogI(firstVisibleItem+"----firstVisibleItem");
-            HttpUtils.downLoadImage(firstVisibleItem, mContext);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            HttpUtils.downLoadImage(firstVisibleItem, mContext);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+            Bitmap bit = LruCacheUtils.getInstance().getBitmapFromMemoryCache(LightImage.imageThumbUrls[firstVisibleItem]);
+            mAdapter.setBitmap(bit);
+            mAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
         super.onScrollStateChanged(view, scrollState);
-    }
-
-    @Override
-    public void onRefresh(PullToRefreshBase refreshView) {
-        super.onRefresh(refreshView);
-
-        if (!mListView.isRefreshing()) {
-            new Handler().postAtTime(new Runnable() {
-                @Override
-                public void run() {
-                    mListView.onRefreshComplete();
-                }
-            }, 1500);
-        }
-
-        if (refreshView.isHeaderShown()) {
-            Toast.makeText(mContext, "下拉刷新", Toast.LENGTH_SHORT).show();
-            //下拉刷新 业务代码
-        } else {
-            Toast.makeText(mContext, "上拉加载更多", Toast.LENGTH_SHORT).show();
-            //上拉加载更多 业务代码
-        }
+        int y =  mListView.getHeight();
+        int x =  mListView.getScrollX();
 
     }
 }
