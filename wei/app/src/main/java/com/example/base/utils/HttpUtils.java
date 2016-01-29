@@ -51,8 +51,13 @@ public class HttpUtils {
      * @param params
      * @return
      */
-    public static String httpPost(String url, Map<String, Object> params, String str) {
+    public static String httpPost(String url, Map<String, Object> params, String str,String[] uploadFiles) {
 
+        String end = "\r\n";
+        String twoHyphens = "--";
+        String boundary = "*****";
+
+        DataOutputStream ds = null;
         InputStream is = null;
         try {
             StringBuffer sb = paseMap(params);
@@ -65,14 +70,35 @@ public class HttpUtils {
             connection.setUseCaches(false);
             connection.setRequestProperty("Content-type", "application/x-www-form-urlencoded");
             connection.setRequestProperty("accept", "*/*");
+            connection.setRequestProperty("Charset", "UTF-8");
             connection.setRequestProperty("connection", "Keep-Alive");
-//            connection.setRequestProperty("Content-Length", String
-//                    .valueOf(sb.length()));
+            connection.setRequestProperty("Content-Type",
+            "multipart/form-data;boundary=" + boundary);
             connection.setRequestMethod(str);
             connection.connect();   //请求连接
 
+            //上传文本
             byte[] bytes = sb.toString().getBytes();
             connection.getOutputStream().write(bytes);
+            //上传文件
+            ds = new DataOutputStream(connection.getOutputStream());
+            for (int i = 0; i < uploadFiles.length; i ++){
+                String uploadFile = uploadFiles[i];
+                String fileName = uploadFile.substring(uploadFile.lastIndexOf("//") + 1);
+                ds.writeBytes(twoHyphens + boundary + end);
+//                ds.writeBytes();
+                ds.writeBytes(end);
+                FileInputStream fis = new FileInputStream(uploadFile);
+                int len = -1;
+                byte[] b = new byte[1024];
+                while((len = fis.read(b)) != -1){
+                    ds.write(b,0,len);
+                }
+                ds.writeBytes(end);
+                fis.close();
+            }
+            ds.writeBytes(twoHyphens + boundary + twoHyphens + end);
+            ds.flush();
 
             is = connection.getInputStream();
             return readInput(is);
@@ -80,12 +106,15 @@ public class HttpUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (is != null) {
                 try {
+                    if (is != null) {
                     is.close();
+                    }
+                    if (ds != null){
+                        ds.close();
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
-                }
             }
         }
         return null;
@@ -120,28 +149,6 @@ public class HttpUtils {
         outputStream.close();
         is.close();
         return json;
-    }
-
-    public void checkVisibility() {
-        int len = LightImage.imageThumbUrls.length;
-
-        for (int i = 0; i < len; i++) {
-//            ImageView imageView = LightImage.imageThumbUrls.
-//            int borderTop = (Integer) imageView.getTag(R.string.border_top);
-//            int borderBottom = (Integer) imageView.getTag(R.string.border_bottom);
-//            if (borderBottom > getScrollY() && borderTop < getScrollY() + scrollViewHeight) {
-//                String imageUrl = (String) imageView.getTag(R.string.image_url);
-//                Bitmap bitmap = imageLoader.getBitmapFromMemoryCache(imageUrl);
-//                if (bitmap != null) {
-//                    imageView.setImageBitmap(bitmap);
-//                } else {
-//                    LoadImageTask task = new LoadImageTask(imageView);
-//                    task.execute(i);
-//                }
-//            } else {
-//                imageView.setImageResource(R.drawable.empty_photo);
-//            }
-        }
     }
 
     //图片下载

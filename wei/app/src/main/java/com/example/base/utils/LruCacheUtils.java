@@ -3,8 +3,10 @@ package com.example.base.utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.util.LruCache;
 
+import java.io.File;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -72,7 +74,7 @@ public class LruCacheUtils {
         return mMemoryCache.get(key);
     }
 
-    public int calculateInSampleSize(BitmapFactory.Options options,
+    private int calculateInSampleSize(BitmapFactory.Options options,
                                             int reqWidth) {
         // 源图片的宽度
         final int width = options.outWidth;
@@ -96,6 +98,21 @@ public class LruCacheUtils {
         // 使用获取到的inSampleSize值再次解析图片
         options.inJustDecodeBounds = false;
         return BitmapFactory.decodeFile(pathName, options);
+    }
+
+    public String getImagePath(String imageUrl) {
+        int lastSlashIndex = imageUrl.lastIndexOf("/");
+        String imageName = imageUrl.substring(lastSlashIndex + 1);
+        String imageDir = Environment.getExternalStorageDirectory()
+                .getPath() + "/image/";
+        imageDir.trim();
+        File file = new File(imageDir);
+        boolean is = file.exists();
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        String imagePath = imageDir + imageName;
+        return imagePath;
     }
 
 }

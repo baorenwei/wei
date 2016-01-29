@@ -11,4 +11,6 @@
     <color name="green">#80FF00</color>
     <color name="purple">#8000FF</color>
     <color name="orange">#FF8000</color>
+    <color name="transparent">#0000</color>
+    <color name="gray">#F1F1F1</color>
 </resources>

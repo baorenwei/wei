@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.RadioGroup;
 import android.widget.RemoteViews;
 
 import com.example.administrator.bao.R;
@@ -23,7 +24,7 @@ import cn.smssdk.gui.GroupListView;
  *
  */
 public abstract class BaseFragmentActivity extends BaseActivity implements View.OnClickListener ,
-        View.OnLongClickListener,AdapterView.OnItemSelectedListener,AdapterView.OnItemClickListener,Runnable,AbsListView.OnScrollListener, PullToRefreshBase.OnRefreshListener  {
+        View.OnLongClickListener,AdapterView.OnItemSelectedListener,AdapterView.OnItemClickListener,Runnable,AbsListView.OnScrollListener, PullToRefreshBase.OnRefreshListener,RadioGroup.OnCheckedChangeListener {
 
     private SharedPreferences.Editor mEditor;
     private SharedPreferences mSharedPreferences;
@@ -152,5 +153,10 @@ public abstract class BaseFragmentActivity extends BaseActivity implements View.
     }
     public void dismissDialog(){
         mDialog.dismiss();
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+
     }
 }

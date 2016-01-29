@@ -24,5 +24,18 @@
     <style name="ActivityTheme_Light" parent="android:Theme.Holo.Light">
         <item name="android:actionBarStyle">@style/actionbar_def_style</item>
     </style>
+    
+    <style name="windowActivity" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground">@drawable/window_activity_backgroup</item>
+    </style>
+
+    <!-- -->
+    <style name="mainFragmentRadioButton" parent="android:style/Theme.Dialog">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:button">@null</item>
+        <!--<item name="android:gravity">center</item>-->
+    </style>
 
 </resources>

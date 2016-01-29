@@ -60,12 +60,22 @@ public class LightActivity extends BaseFragmentActivity {
     Button button;
     RelativeLayout mLinearLayout;
     TextView textView;
-    ImageView mImageView;
 
     List<String> mList;
     PullToRefreshListView mListView;
     LightAdapter mAdapter;
     Bitmap bitmap;
+
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 0:
+                    mAdapter.notifyDataSetChanged();
+            }
+        }
+    };
 
     private ContentObserver mObserver = new ContentObserver(new Handler()) {
         @Override
@@ -87,10 +97,9 @@ public class LightActivity extends BaseFragmentActivity {
         button = (Button) findViewById(R.id.button);
         mListView = (PullToRefreshListView) findViewById(R.id.listView);
         mLinearLayout = (RelativeLayout) findViewById(R.id.linearLayout);
-        mImageView = (ImageView) findViewById(R.id.mImageView);
 
 
-        mAdapter = new LightAdapter<String>(mContext);
+        mAdapter = new LightAdapter<String>(mContext,getDisplayMetrics(1));
         mList = new ArrayList<>();
         for (int i = 0; i < LightImage.imageThumbUrls.length; i++) {
             mList.add(i + "");
@@ -111,8 +120,6 @@ public class LightActivity extends BaseFragmentActivity {
         button.setOnClickListener(this);
         mListView.setOnScrollListener(this);
         getMetaData();
-
-        mImageView.setImageResource(R.drawable.logo);
 
     }
 
@@ -160,14 +167,26 @@ public class LightActivity extends BaseFragmentActivity {
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         super.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
 
-//        try {
-//            HttpUtils.downLoadImage(firstVisibleItem, mContext);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-            Bitmap bit = LruCacheUtils.getInstance().getBitmapFromMemoryCache(LightImage.imageThumbUrls[firstVisibleItem]);
+        int visiItemCount = visibleItemCount;
+        int index = firstVisibleItem;
+        LogUtils.showLogI(visiItemCount+"visiItemCount");
+        LogUtils.showLogI(firstVisibleItem+"firstVisibleItem");
+
+        for (int i = 0; i < visiItemCount; i++){
+
+            try {
+                HttpUtils.downLoadImage(index, mContext);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            Bitmap bit = LruCacheUtils.getInstance().getBitmapFromMemoryCache(LightImage.imageThumbUrls[index]);
+            LogUtils.showLogI(bit+"");
             mAdapter.setBitmap(bit);
-            mAdapter.notifyDataSetChanged();
+            index ++;
+        }
+        mHandler.sendEmptyMessage(0);
+//        mAdapter.notifyDataSetChanged();
+        index = 0;
     }
 
     @Override

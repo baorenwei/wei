@@ -12,4 +12,7 @@ public class Conn {
 
     public static final String REGIST = BASE_URL + "v1.0/users/emailExist";
 
+    //更改头像
+    public static final String UPDATE_PICTURE = BASE_URL + "v1.0/users/upHeadThumb";
+
 }

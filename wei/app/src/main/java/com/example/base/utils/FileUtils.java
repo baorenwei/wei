@@ -20,18 +20,18 @@ import java.io.IOException;
  */
 public class FileUtils {
 
-    public static void save(Context context, String fileName, Object obj) {
+    public static void save(Context context, String fileName, Bitmap bitmap) {
 
-        if (obj == null || "".equals(obj)) {
+        if (bitmap == null || "".equals(bitmap)) {
             return;
         }
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
             FileOutputStream fos = null;
-            File fileSDDir = Environment.getExternalStorageDirectory();  //获取SD卡目录
+            File fileSDDir = Environment.getExternalStorageDirectory() ;  //获取SD卡目录
             File fileSave = new File(fileSDDir,fileName);
             try {
                 fos = new FileOutputStream(fileSave);
-                fos.write(obj.toString().getBytes());
+                fos.write(bitmap.toString().getBytes());
             } catch (Exception e) {
                 e.printStackTrace();
             }finally {
@@ -49,7 +49,7 @@ public class FileUtils {
         FileOutputStream fos = null;
         try {
             fos = context.openFileOutput(fileName, context.MODE_PRIVATE);
-            fos.write(obj.toString().getBytes());
+            fos.write(bitmap.toString().getBytes());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

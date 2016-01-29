@@ -27,5 +27,6 @@ dependencies {
     compile project(':smssdk')
     compile project(':listview')
     compile project(':zxing')
+    compile project(':IMKit')
 }
 

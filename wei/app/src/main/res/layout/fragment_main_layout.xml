@@ -1,10 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical">
 
+    <android.support.v4.view.ViewPager
+        android:id="@+id/mainFragmentViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
 
-    <FrameLayout
-        android:id="@+id/mainFragmentFrameLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray"></View>
+    <RadioGroup
+        android:id="@+id/mainFragmentRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fifty"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/mainFragmentMessageRadioButton"
+            style="@style/mainFragmentRadioButton"
+            android:layout_margin="@dimen/fifteen"
+            android:gravity="center_horizontal"
+            android:text="@string/message"/>
+
+        <RadioButton
+            android:id="@+id/mainFragmentContactRadioButton"
+            style="@style/mainFragmentRadioButton"
+            android:layout_margin="@dimen/fifteen"
+            android:text="@string/contact"/>
+
+        <RadioButton
+            android:id="@+id/mainFragmentDynamicRadioButton"
+            style="@style/mainFragmentRadioButton"
+            android:layout_margin="@dimen/fifteen"
+            android:text="@string/dynamic"/>
+
+    </RadioGroup>
 </LinearLayout>

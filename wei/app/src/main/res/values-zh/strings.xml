@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="action_settings">设置</string>
     <string name="app_name">包</string>
+    <!-- 菜单 消息 -->
+    <string name="action_settings">设置</string>
     <string name="action_quit">退出</string>
     <string name="action_scan">扫一扫</string> new message
     <string name="new_message">新消息</string>
     <string name="register_sended_code">send verification code to %s ,please wait for accept</string>
     <string name="register_send_fail">send verification code fail,please check your phone number</string>
     <string name="register_code_error">verification code error</string>
-    <string name="border_top">顶部</string>
-    <string name="border_buttom">底部</string>
+    <!-- 对话框 -->
     <string name="in_the_effort">努力中 ...</string>
+    <!-- ListView-->
+    <string name="delete">删除</string>
+    <string name="stick">置顶</string>
+
+    <!-- 主FragmentActivity-->
+    <string name="message">消息</string>
+    <string name="contact">联系人</string>
+    <string name="dynamic">我的</string>
+
+    <!-- 登录Activity-->
+    <string name="forget_pass">忘记密码</string>
+    <string name="registered">注册</string>
+
 </resources>

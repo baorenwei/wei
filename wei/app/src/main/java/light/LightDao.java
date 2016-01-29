@@ -54,9 +54,8 @@ public class LightDao {
     public LightBen getJsonData(Context context, LightCallBack callback) {
 
         Map<String, Object> map = new HashMap<>();
-        map.put("access_token", "932d9439-00e4-4ec5-84ac-de2e9c6fa5ce");
-        map.put("email", "15986773816@163.com");
-        String json = HttpUtils.httpPost(Conn.REGIST, map, "POST");
+        map.put("access_token", "7b38c6c5-b5e4-492b-a699-c7d3c0eaf58f");
+        String json = HttpUtils.httpPost(Conn.UPDATE_PICTURE, map, "POST");
         try {
             JSONObject obj = new JSONObject(json);
 //            String access_token = obj.getString("access_token");

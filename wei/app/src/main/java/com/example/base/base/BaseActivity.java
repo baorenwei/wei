@@ -1,6 +1,7 @@
 package com.example.base.base;
 
 import android.app.Activity;
+import android.app.LocalActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -51,10 +52,13 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
 
     private final static List<Activity> mActivitys = new ArrayList<Activity>();
 
+    public LocalActivityManager mactivityManager = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
+        mactivityManager = new LocalActivityManager(BaseActivity.this, true);
+        mactivityManager.dispatchCreate(savedInstanceState);
         init();
     }
     private void init(){
@@ -155,12 +159,25 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
         overridePendingTransition(R.anim.abc_slide_in_left, R.anim.abc_slide_out_right);
     }
 
-    //获取手机屏幕属性
-    public int getDisplayMetrics(){
-        DisplayMetrics metric = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metric);
-        int width = metric.widthPixels;
-        return width;
+    /**
+     * 获取手机屏幕属性
+     * 1代表宽
+     * 2代表高
+     * 3代表宽和高
+     * */
+    public int getDisplayMetrics(int a){
+        if (a == 1){
+            DisplayMetrics metric = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(metric);
+            int width = metric.widthPixels;
+            return width;
+        }else if (a == 2){
+            DisplayMetrics metric = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(metric);
+            int height = metric.heightPixels;
+            return height;
+        }
+        return 0;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.base.base;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,11 +18,13 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         View.OnLongClickListener,AdapterView.OnItemSelectedListener {
 
     public View mLayout;
+    public Context mContext;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mLayout = inflater.inflate(layoutResID(), null);
+        mContext = getActivity();
         initView();
         initData();
         return mLayout;
