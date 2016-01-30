@@ -100,6 +100,5 @@
     <orderEntry type="module" module-name="zxing" exported="" />
     <orderEntry type="module" module-name="smssdk" exported="" />
     <orderEntry type="module" module-name="listview" exported="" />
-    <orderEntry type="module" module-name="IMKit" exported="" />
   </component>
 </module>

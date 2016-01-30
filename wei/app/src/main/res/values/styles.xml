@@ -26,7 +26,7 @@
     </style>
     
     <style name="windowActivity" parent="android:style/Theme.Dialog">
-        <item name="android:windowBackground">@drawable/window_activity_backgroup</item>
+        <item name="android:windowBackground">@drawable/ic</item>
     </style>
 
     <!-- -->

@@ -93,28 +93,6 @@ public class MainFragmentActivity extends BaseFragmentActivity {
         return view;
     }
 
-    private class MyOnPagerChangeListener implements ViewPager.OnPageChangeListener {
-
-        @Override
-        public void onPageScrollStateChanged(int position) {
-            // TODO Auto-generated method stub
-            int pos = 0;
-        }
-
-        @Override
-        public void onPageScrolled(int arg0, float arg1, int arg2) {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void onPageSelected(int arg0) {
-            // TODO Auto-generated method stub
-
-        }
-
-    }
-
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         super.onCheckedChanged(group, checkedId);

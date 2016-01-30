@@ -8,9 +8,6 @@ import com.example.base.base.BaseApplication;
 import com.example.base.base.BaseFragmentActivity;
 import com.example.base.utils.LogUtils;
 
-import io.rong.imkit.RongIM;
-import io.rong.imlib.RongIMClient;
-
 /**
  * Created by Administrator on 2016/1/10.
  */
@@ -30,31 +27,6 @@ public class LoginActivity extends BaseFragmentActivity {
 
     @Override
     protected void initData() {
-
-        connetImkit();
     }
 
-    //连接融云
-    private void connetImkit(){
-        if (getApplicationInfo().packageName.equals(BaseApplication.getCurProcessName(getApplicationContext()))) {
-            RongIM.connect(token1, new RongIMClient.ConnectCallback() {
-                @Override
-                public void onTokenIncorrect() {
-                }
-
-                @Override
-                public void onSuccess(String s) {
-                    Intent intent = new Intent();
-                    intent.setClass(mContext, MainFragmentActivity.class);
-                    startActivity(intent);
-                }
-
-                @Override
-                public void onError(RongIMClient.ErrorCode errorCode) {
-
-                    LogUtils.showLogI("连接失败");
-                }
-            });
-        }
-    }
 }

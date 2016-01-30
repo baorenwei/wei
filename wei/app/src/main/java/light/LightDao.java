@@ -55,7 +55,7 @@ public class LightDao {
 
         Map<String, Object> map = new HashMap<>();
         map.put("access_token", "7b38c6c5-b5e4-492b-a699-c7d3c0eaf58f");
-        String json = HttpUtils.httpPost(Conn.UPDATE_PICTURE, map, "POST");
+        String json = HttpUtils.httpPost(Conn.UPDATE_PICTURE, map, "POST",null);
         try {
             JSONObject obj = new JSONObject(json);
 //            String access_token = obj.getString("access_token");
