@@ -71,7 +71,7 @@ public class LightAdapter<String> extends MyBaseAdapter implements View.OnClickL
             mHolder = (ViewHolder)convertView.getTag();
         }
         if (mBitmap == null){
-            mHolder.mLightListViewImageView.setImageResource(R.drawable.anim);
+            mHolder.mLightListViewImageView.setImageResource(R.drawable.smssdk_search_icon);
         }else{
             mHolder.mLightListViewImageView.setImageBitmap(mBitmap);
         }

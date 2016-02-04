@@ -140,7 +140,7 @@ public class UserInfoActivity extends BaseFragmentActivity {
                         mUserImageView.setImageBitmap(bit);
                     }else{
 //                        Bitmap bitmap1 = mContext.getResources().getDrawable(R.drawable.ic);
-                        mUserImageView.setImageResource(R.drawable.anim);
+                        mUserImageView.setImageResource(R.drawable.smssdk_search_icon);
                     }
                     // 将得到的图片设置到SmartImageView
 //                    mUserImageView.setImageBitmap(bitMap);

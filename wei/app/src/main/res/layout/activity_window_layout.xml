@@ -8,7 +8,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_centerInParent="true"
-        android:background="@drawable/ic_window_round"/>
+        />
 
     <TextView
         android:layout_width="wrap_content"
