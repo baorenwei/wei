@@ -2,6 +2,8 @@ package activity;
 
 import android.app.LocalActivityManager;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
@@ -9,17 +11,27 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.SimpleAdapter;
 
 import com.example.administrator.bao.R;
 import com.example.base.base.BaseFragmentActivity;
 import com.example.base.utils.LogUtils;
+import com.example.base.widget.MyLinearLayout;
+import com.videogo.constant.Constant;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import adapter.MainFragmentViewPagerAdapter;
+import camera.CameraBroadcats;
 import fragment.FirstFragment;
 import fragment.SecondFragment;
 import fragment.ThredFragment;
@@ -34,11 +46,11 @@ public class MainFragmentActivity extends BaseFragmentActivity {
     private ArrayList<View> mlistview = null;
     private MainFragmentViewPagerAdapter mViewAdapter;
 
+    private MyLinearLayout mMainFragmentMessage;
+    private MyLinearLayout mMainFragmentGroup;
+    private MyLinearLayout mMainFragmentMy;
 
-    private RadioGroup mMainFragmentRadioGroup;
-    private RadioButton mMainFragmentMessageRadioButton;
-    private RadioButton mMainFragmentContactRadioButton;
-    private RadioButton mMainFragmentDynamicRadioButton;
+    private CameraBroadcats mCameraBroadcats;   //萤石广播
 
 
     @Override
@@ -49,21 +61,64 @@ public class MainFragmentActivity extends BaseFragmentActivity {
 
     @Override
     protected void initView() {
-        mMainFragmentRadioGroup = (RadioGroup) findViewById(R.id.mainFragmentRadioGroup);
-        mMainFragmentMessageRadioButton = (RadioButton) findViewById(R.id.mainFragmentMessageRadioButton);
-        mMainFragmentContactRadioButton = (RadioButton) findViewById(R.id.mainFragmentContactRadioButton);
-        mMainFragmentDynamicRadioButton = (RadioButton) findViewById(R.id.mainFragmentDynamicRadioButton);
+        mMainFragmentMessage = (MyLinearLayout) findViewById(R.id.mainFragmentMessage);
+        mMainFragmentGroup = (MyLinearLayout) findViewById(R.id.mainFragmentGroup);
+        mMainFragmentMy = (MyLinearLayout) findViewById(R.id.mainFragmentMy);
         mMainFragmentViewPager = (ViewPager)findViewById(R.id.mainFragmentViewPager);
+
+        mMainFragmentGroup.setImageView(R.drawable.ic_yuan);
+        mMainFragmentGroup.setTextView("聊天");
+
+        mMainFragmentMy.setImageView(R.drawable.ic_yuan);
+        mMainFragmentMy.setTextView("摄像头");
+
+        mMainFragmentMessage.setImageView(R.drawable.ic_yuan);
+        mMainFragmentMessage.setTextView("我的");
     }
 
     @Override
     protected void initData() {
-        mMainFragmentRadioGroup.setOnCheckedChangeListener(this);
+
         setLeftTextView("左边");
         setRightTextView("右边");
         setTitleTextView("小包");
+
+
+        mMainFragmentGroup.setOnClickListener(this);
+        mMainFragmentMy.setOnClickListener(this);
+        mMainFragmentMessage.setOnClickListener(this);
         initPagerAdapter();
 
+//        startActivity(new Intent(this, WindowActivity.class));
+//
+//        new  Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                WindowActivity activity = null;
+//                if (activity == null){
+//                    activity = new WindowActivity();
+//                }
+//                activity.finshWindow();
+//            }
+//        },3000);
+//        sendYINGbroad();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        unregisterReceiver(mCameraBroadcats);
+    }
+
+    //发送萤石广播
+    private void sendYINGbroad(){
+        Intent intent = new Intent();
+        mCameraBroadcats = new CameraBroadcats();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constant.OAUTH_SUCCESS_ACTION);
+        registerReceiver(mCameraBroadcats,filter);
+        mCameraBroadcats.onReceive(this, intent);
     }
 
     private void initPagerAdapter() {
@@ -94,15 +149,20 @@ public class MainFragmentActivity extends BaseFragmentActivity {
     }
 
     @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
-        super.onCheckedChanged(group, checkedId);
-        if (checkedId == mMainFragmentMessageRadioButton.getId()) {
-            mMainFragmentViewPager.setCurrentItem(0);
-        } else if (checkedId == mMainFragmentContactRadioButton.getId()) {
-            mMainFragmentViewPager.setCurrentItem(1);
-        } else if (checkedId == mMainFragmentDynamicRadioButton.getId()) {
-            mMainFragmentViewPager.setCurrentItem(2);
-            LogUtils.showLogI("点了");
+    public void onClick(View v) {
+        super.onClick(v);
+        switch (v.getId()){
+            case R.id.mainFragmentMessage:
+                mMainFragmentViewPager.setCurrentItem(0);
+                break;
+            case R.id.mainFragmentGroup:
+                mMainFragmentViewPager.setCurrentItem(1);
+                break;
+            case R.id.mainFragmentMy:
+                mMainFragmentViewPager.setCurrentItem(2);
+                break;
+            case R.id.rightTextView:
+                break;
         }
     }
 }

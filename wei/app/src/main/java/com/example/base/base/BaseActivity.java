@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 
 import Interface.Watcher;
+import activity.WindowActivity;
+import activity.WindowListView;
 
 /**
  *
@@ -45,8 +47,8 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
     private TextView mRightTextView;
 
     public Context mContext;
-    public boolean isConneted;
-    private int mMenuResid;
+    public boolean isConneted;  //是否联网
+    private int mMenuResid;   //菜单
 
     private static final int REQUEST_CODE = 765;
 
@@ -66,6 +68,7 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
         mActivitys.add(this);
         setupActionBar(R.layout.action_bar);
         setMenu(R.menu.menu_main);
+
     }
 
     private void setupActionBar(int layoutId){

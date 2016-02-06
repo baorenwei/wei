@@ -119,11 +119,31 @@ public class LightActivity extends BaseFragmentActivity {
         commit.setOnClickListener(this);
         button.setOnClickListener(this);
         mListView.setOnScrollListener(this);
-        getMetaData();
-
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getMetaData();
+    }
 
+    @Override
+    public void run() {
+        super.run();
+//        getJsonData();
+    }
+
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+
+        switch (v.getId()){
+            case R.id.button:
+                break;
+        }
+    }
+
+    //得到数据库数据
     private void getMetaData() {
         String userName = null;
         String sexs = null;
@@ -142,11 +162,12 @@ public class LightActivity extends BaseFragmentActivity {
 
     }
 
+    //得到解析后的Json数据
     private void getJsonData() {
-        new LightDao().getJsonData(mContext, new LightCallBack() {
+        LightDao.getJsonData(mContext, new LightCallBack() {
             @Override
             public void complete(LightBen ben) {
-//                textView.setText("userName--"+ben.getUserName()+"--sexs--"+ben.getSex()+"--email--"+ben.getEmail()+"--date--"+ben.getData());
+                textView.setText("userName--" + ben.getUserName() + "--sexs--" + ben.getSex() + "--email--" + ben.getEmail() + "--date--" + ben.getData());
             }
 
             @Override
@@ -156,37 +177,28 @@ public class LightActivity extends BaseFragmentActivity {
         });
     }
 
-    @Override
-    public void run() {
-        super.run();
-//        getJsonData();
-    }
 
-    Boolean mIsShow;
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         super.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
 
         int visiItemCount = visibleItemCount;
         int index = firstVisibleItem;
-        LogUtils.showLogI(visiItemCount+"visiItemCount");
-        LogUtils.showLogI(firstVisibleItem+"firstVisibleItem");
 
         for (int i = 0; i < visiItemCount; i++){
 
+            if (index == LightImage.imageThumbUrls.length){
+                break;
+            }
             try {
                 HttpUtils.downLoadImage(index, mContext);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
             Bitmap bit = LruCacheUtils.getInstance().getBitmapFromMemoryCache(LightImage.imageThumbUrls[index]);
-            LogUtils.showLogI(bit+"");
             mAdapter.setBitmap(bit);
             index ++;
         }
-        mHandler.sendEmptyMessage(0);
-//        mAdapter.notifyDataSetChanged();
-        index = 0;
     }
 
     @Override
@@ -194,6 +206,6 @@ public class LightActivity extends BaseFragmentActivity {
         super.onScrollStateChanged(view, scrollState);
         int y =  mListView.getHeight();
         int x =  mListView.getScrollX();
-
     }
+
 }

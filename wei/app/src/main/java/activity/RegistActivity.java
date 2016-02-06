@@ -1,5 +1,6 @@
 package activity;
 
+import android.content.Intent;
 import android.widget.TextView;
 
 import com.example.administrator.bao.R;
@@ -36,7 +37,13 @@ public class RegistActivity extends BaseFragmentActivity {
 
     @Override
     protected int initLayout() {
-        return R.layout.widget_light_adapter_layout;
+        Intent intent = getIntent();
+        if (intent.getFlags() == LoginActivity.FORGET_PASS_CODE){
+            return R.layout.activity_forget_pass_layout;
+        }else if(intent.getFlags() == LoginActivity.REGIST_CODE){
+            return R.layout.activity_regist_layout;
+        }
+        return 0;
     }
 
     protected void initView() {

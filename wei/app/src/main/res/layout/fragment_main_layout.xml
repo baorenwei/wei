@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/mainFragmentViewPager"
@@ -13,30 +18,32 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/gray"></View>
-    <RadioGroup
-        android:id="@+id/mainFragmentRadioGroup"
+
+    <LinearLayout
+        android:id="@+id/mainFragmentLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/fifty"
         android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/mainFragmentMessageRadioButton"
+        <com.example.base.widget.MyLinearLayout
+            android:id="@+id/mainFragmentMessage"
             style="@style/mainFragmentRadioButton"
             android:layout_margin="@dimen/fifteen"
-            android:gravity="center_horizontal"
-            android:text="@string/message"/>
+            />
 
-        <RadioButton
-            android:id="@+id/mainFragmentContactRadioButton"
+        <com.example.base.widget.MyLinearLayout
+            android:id="@+id/mainFragmentGroup"
             style="@style/mainFragmentRadioButton"
             android:layout_margin="@dimen/fifteen"
-            android:text="@string/contact"/>
+            />
 
-        <RadioButton
-            android:id="@+id/mainFragmentDynamicRadioButton"
+        <com.example.base.widget.MyLinearLayout
+            android:id="@+id/mainFragmentMy"
             style="@style/mainFragmentRadioButton"
             android:layout_margin="@dimen/fifteen"
-            android:text="@string/dynamic"/>
+            />
 
-    </RadioGroup>
-</LinearLayout>
+    </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

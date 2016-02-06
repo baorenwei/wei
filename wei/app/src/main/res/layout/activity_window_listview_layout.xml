@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ListView
+        android:id="@+id/actbarListView"
+        android:layout_width="@dimen/one_hundred_and_fifty"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="@dimen/fifteen"
+        android:layout_marginRight="@dimen/six"
+        android:visibility="gone"
+        android:divider="@color/transparent">
+    </ListView>
+</RelativeLayout>

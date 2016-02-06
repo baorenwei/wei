@@ -17,6 +17,8 @@ import android.widget.RemoteViews;
 import com.example.administrator.bao.R;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 
+import activity.WindowActivity;
+import activity.WindowListView;
 import cn.smssdk.gui.GroupListView;
 
 /**

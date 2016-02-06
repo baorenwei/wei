@@ -12,7 +12,7 @@ import com.example.base.base.BaseFragmentActivity;
 public class AnimActivity extends BaseFragmentActivity {
     @Override
     protected int initLayout() {
-        return R.layout.anim_activity_layout;
+        return R.layout.activity_anim_layout;
     }
 
     @Override

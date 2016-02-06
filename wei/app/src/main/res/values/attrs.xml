@@ -4,4 +4,9 @@
     <declare-styleable name="anim">
         <attr name="auto_play" format="boolean"></attr>
     </declare-styleable>
+
+    <declare-styleable name="MyLayout">
+        <attr name="backgroup" format="integer"></attr>
+        <attr name="text" format="string"></attr>
+    </declare-styleable>
 </resources>

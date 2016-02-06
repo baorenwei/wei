@@ -66,14 +66,14 @@
         </activity>
 
         <!-- 窗口Activity -->
-        <activity android:name="test.WindowActivity"
-            android:theme="@style/windowActivity"
-            ></activity>
+        <activity android:name="activity.WindowActivity"
+            android:theme="@style/windowActivity">
+        </activity>
 
-        <!-- MainFragmentActivity -->
-        <!--<activity android:name="activity.MainFragmentActivity"-->
-            <!--android:theme="@style/ActivityTheme_Light">-->
-        <!--</activity>-->
+        <!-- 窗口ListViewActivity -->
+        <activity android:name="activity.WindowListView"
+            android:theme="@style/windowActivity">
+        </activity>
 
         <activity android:name="fragment.FirstFragment"
             >
@@ -88,16 +88,26 @@
         </activity>
 
 
+        <!-- 灯 -->
         <provider
             android:authorities="com.emample.light.provider"
             android:name="light.LigthProvider"></provider>
 
+        <!-- 门-->
         <provider
             android:authorities="com.emample.door.provider"
             android:name="door.DoorProvider"></provider>
 
+        <!-- 二维码扫描-->
         <activity
             android:name="com.google.zxing.client.android.ScanQRActivity"
+            android:screenOrientation="portrait"
+            />
+
+        <!-- 摄像头列表-->
+        <activity
+            android:name="camera.CameraListViewActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             />
 

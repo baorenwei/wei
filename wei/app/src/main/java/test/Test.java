@@ -1,6 +1,16 @@
 package test;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -8,14 +18,25 @@ import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.example.administrator.bao.R;
 import com.example.base.base.BaseFragmentActivity;
+import com.example.base.utils.UpdateInfoServiceUtils;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import activity.WindowActivity;
+import model.UpdateInfo;
 
 /**
  * Created by Administrator on 2016/1/10.
@@ -24,7 +45,7 @@ public class Test extends BaseFragmentActivity {
 
     private Button mButton;
     public ListView mActionBarListView;
-    public boolean mIsShow;
+    public boolean mIsShow = false;
 
     @Override
     protected int initLayout() {
@@ -45,16 +66,15 @@ public class Test extends BaseFragmentActivity {
 
     @Override
     protected void initData() {
-
 //        setRightTextView("菜单");
 //        addListViewItem();
-         startActivity(new Intent(mContext,WindowActivity.class));
+         startActivity(new Intent(mContext, WindowActivity.class));
     }
 
     private void addListViewItem() {
         String[] titles = {"title1", "title2", "title3", "title4", "title5", "title6"};
-        int[] drawableIds = {R.drawable.ic, R.drawable.ic, R.drawable.ic,
-                R.drawable.ic, R.drawable.ic, R.drawable.ic};
+        int[] drawableIds = {R.drawable.ic_yuan, R.drawable.ic_yuan, R.drawable.ic_yuan,
+                R.drawable.ic_yuan, R.drawable.ic_yuan, R.drawable.ic_yuan};
 
         setListViewItem(drawableIds, titles);
     }

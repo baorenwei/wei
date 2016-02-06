@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="250dp" android:layout_height="250dp"
+    android:layout_width="match_parent" android:layout_height="match_parent"
     android:layout_centerInParent="true">
+
+    <RelativeLayout
+        android:layout_width="@dimen/two"
+        android:layout_height="@dimen/twoTwo"
+        android:layout_centerInParent="true">
 
     <ImageView
         android:id="@+id/windowImageView"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_centerInParent="true"
+        android:background="@drawable/ic_yuan"
         />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/windowImageView"
-        android:layout_marginTop="@dimen/twelve"
+        android:layout_marginTop="@dimen/forty"
         android:layout_centerInParent="true"
         android:textColor="@color/bule"
-        android:text="努力中 ..."/>
+        android:text="努力获取中 ..."/>
+
+    </RelativeLayout>
 </RelativeLayout>

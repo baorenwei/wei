@@ -17,8 +17,8 @@
 
     <!-- 主FragmentActivity-->
     <string name="message">消息</string>
-    <string name="contact">联系人</string>
-    <string name="dynamic">我的</string>
+    <string name="camera">摄像头</string>
+    <string name="my">我的</string>
 
     <!-- 登录Activity-->
     <string name="forget_pass">忘记密码</string>

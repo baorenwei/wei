@@ -13,6 +13,7 @@
         android:layout_marginBottom="@dimen/fifteen">
 
         <TextView
+            android:id="@+id/forgetTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -22,9 +23,11 @@
         <View
             android:layout_width="1dp"
             android:layout_height="@dimen/thirty"
+            android:layout_gravity="center"
             android:background="@color/bule"></View>
 
         <TextView
+            android:id="@+id/registTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

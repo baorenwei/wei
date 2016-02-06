@@ -83,24 +83,24 @@ public class PowerImageView extends ImageView implements View.OnClickListener {
     public PowerImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.anim);
-        int resourceId = getResourceId(a, context, attrs);
-        if (resourceId != 0) {
-            // 当资源id不等于0时，就去获取该资源的流
-            InputStream is = getResources().openRawResource(resourceId);
-            // 使用Movie类对流进行解码
-            mMovie = Movie.decodeStream(is);
-            if (mMovie != null) {
-                // 如果返回值不等于null，就说明这是一个GIF图片，下面获取是否自动播放的属性
-                isAutoPlay = a.getBoolean(R.styleable.anim_auto_play, false);
-                Bitmap bitmap = BitmapFactory.decodeStream(is);
-                mImageWidth = bitmap.getWidth();
-                mImageHeight = bitmap.getHeight();
-                bitmap.recycle();
-                if (!isAutoPlay) {
-                    // 当不允许自动播放的时候，得到开始播放按钮的图片，并注册点击事件
-                    mStartButton = BitmapFactory.decodeResource(getResources(),
-                            R.drawable.ic_launcher);
-                    setOnClickListener(this);
+                    int resourceId = getResourceId(a, context, attrs);
+                    if (resourceId != 0) {
+                        // 当资源id不等于0时，就去获取该资源的流
+                        InputStream is = getResources().openRawResource(resourceId);
+                        // 使用Movie类对流进行解码
+                        mMovie = Movie.decodeStream(is);
+                        if (mMovie != null) {
+                            // 如果返回值不等于null，就说明这是一个GIF图片，下面获取是否自动播放的属性
+                            isAutoPlay = a.getBoolean(R.styleable.anim_auto_play, false);
+                            Bitmap bitmap = BitmapFactory.decodeStream(is);
+                            mImageWidth = bitmap.getWidth();
+                            mImageHeight = bitmap.getHeight();
+                            bitmap.recycle();
+                            if (!isAutoPlay) {
+                                // 当不允许自动播放的时候，得到开始播放按钮的图片，并注册点击事件
+                                mStartButton = BitmapFactory.decodeResource(getResources(),
+                                        R.drawable.ic_launcher);
+                                setOnClickListener(this);
                 }
             }
         }

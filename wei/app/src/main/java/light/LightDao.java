@@ -25,7 +25,7 @@ import Interface.LightCallBack;
 public class LightDao {
 
     //将数据保存到数据库
-    private LightBen updateData(Context context, String username, String enail, String data, String sex) {
+    public static LightBen updateData(Context context, String username, String enail, String data, String sex) {
 
         ContentResolver mResolver = context.getContentResolver();
         ContentValues values = new ContentValues();
@@ -51,20 +51,20 @@ public class LightDao {
     }
 
     //解析json数据
-    public LightBen getJsonData(Context context, LightCallBack callback) {
+    public static LightBen getJsonData(Context context, LightCallBack callback) {
 
         Map<String, Object> map = new HashMap<>();
         map.put("access_token", "7b38c6c5-b5e4-492b-a699-c7d3c0eaf58f");
         String json = HttpUtils.httpPost(Conn.UPDATE_PICTURE, map, "POST",null);
         try {
             JSONObject obj = new JSONObject(json);
-//            String access_token = obj.getString("access_token");
+            String access_token = obj.getString("access_token");
             LogUtils.showLogI(obj + "");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-//        LightBen ben = updateData(context, "bao", "bao", "bao", "bao");
-//        callback.complete(ben);
+        LightBen ben = updateData(context, "bao", "bao", "bao", "bao");
+        callback.complete(ben);
         return null;
     }
 }
