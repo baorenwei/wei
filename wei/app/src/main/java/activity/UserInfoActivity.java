@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.example.administrator.bao.R;
 import com.example.base.base.BaseFragmentActivity;
@@ -26,7 +27,7 @@ import java.io.FileNotFoundException;
 /**
  * Created by Administrator on 2016/1/28.
  */
-public class pictureActivity extends BaseFragmentActivity {
+public class UserInfoActivity extends BaseFragmentActivity {
 
     /*用来标识请求照相功能的activity*/
     private static final int CAMERA_WITH_DATA = 1001;
@@ -36,7 +37,8 @@ public class pictureActivity extends BaseFragmentActivity {
     private Bitmap bitMap;       //用来保存图片
     private boolean hasImage;    //是否已经选择了图片
 
-    private ImageView mUserImageView;
+    private ImageView mUserIconImageView;
+    private LinearLayout mShenji;
     @Override
     protected int initLayout() {
         return R.layout.activity_userinfo_layout;
@@ -45,20 +47,28 @@ public class pictureActivity extends BaseFragmentActivity {
     @Override
     protected void initView() {
 
-        mUserImageView = (ImageView)findViewById(R.id.userImageView);
+        mUserIconImageView = (ImageView)findViewById(R.id.userIconImageView);
+        mShenji = (LinearLayout)findViewById(R.id.shenji);
     }
 
     @Override
     protected void initData() {
 
-        mUserImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        mShenji.setOnClickListener(this);
+        mUserIconImageView.setOnClickListener(this);
+    }
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+
+        switch (v.getId()){
+            case R.id.shenji:
+                    UpdateActivity mActivity = new UpdateActivity(mContext);
+                break;
+            case R.id.userIconImageView:
                 showDialog();
-            }
-        });
-        Bitmap bitmap = LruCacheUtils.getInstance().getBitmapFromMemoryCache("1");
-        LogUtils.showLogI(address+"");
+                break;
+        }
     }
 
     // 创建对话框
@@ -137,10 +147,10 @@ public class pictureActivity extends BaseFragmentActivity {
                     }
                     if (bitMap != null){
                         Bitmap bit = BitmapUtils.getRoundBitmap(bitMap);
-                        mUserImageView.setImageBitmap(bit);
+                        mUserIconImageView.setImageBitmap(bit);
                     }else{
 //                        Bitmap bitmap1 = mContext.getResources().getDrawable(R.drawable.ic);
-                        mUserImageView.setImageResource(R.drawable.smssdk_search_icon);
+                        mUserIconImageView.setImageResource(R.drawable.smssdk_search_icon);
                     }
                     // 将得到的图片设置到SmartImageView
 //                    mUserImageView.setImageBitmap(bitMap);

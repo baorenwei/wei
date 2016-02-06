@@ -5,7 +5,22 @@
     android:layout_height="match_parent"
     >
 
+    <ImageView
+        android:id="@+id/loginIconImageView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/one_hundred_and_fifty"
+        android:background="@drawable/ic_launcher"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fifty"
+        android:layout_marginRight="@dimen/fifteen"
+        android:layout_marginLeft="@dimen/fifteen"
+        android:layout_above="@+id/forgetAndRegist"
+        android:layout_marginBottom="@dimen/fifteen"/>
+
     <LinearLayout
+        android:id="@+id/forgetAndRegist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"

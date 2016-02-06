@@ -32,6 +32,10 @@ public abstract class BaseFragmentActivity extends BaseActivity implements View.
     private SharedPreferences mSharedPreferences;
     private ProgressDialog mDialog;
 
+    public String LOGIN = "1";
+    public String UN_LOGIN = "2";
+    public WindowActivity mWindowActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

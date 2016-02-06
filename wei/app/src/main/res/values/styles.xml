@@ -37,4 +37,11 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <!-- -->
+    <style name="view" >
+        <item name="android:layout_marginLeft">@dimen/fifteen</item>
+        <item name="android:layout_marginRight">@dimen/fifteen</item>
+        <item name="android:layout_marginTop">@dimen/fifteen</item>
+    </style>
+
 </resources>

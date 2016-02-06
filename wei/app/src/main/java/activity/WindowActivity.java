@@ -67,7 +67,6 @@ public class WindowActivity extends Activity {
 
             }
         });
-
     }
 
     public void buttom() {

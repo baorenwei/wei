@@ -21,7 +21,7 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
 //        initSMSSDK();
-        initYING();
+//        initYING();
     }
 
     private void initSMSSDK(){

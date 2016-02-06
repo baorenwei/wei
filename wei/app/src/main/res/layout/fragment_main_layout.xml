@@ -42,7 +42,6 @@
             style="@style/mainFragmentRadioButton"
             android:layout_margin="@dimen/fifteen"
             />
-
     </LinearLayout>
     </LinearLayout>
 

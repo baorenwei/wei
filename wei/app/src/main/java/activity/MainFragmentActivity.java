@@ -52,12 +52,10 @@ public class MainFragmentActivity extends BaseFragmentActivity {
 
     private CameraBroadcats mCameraBroadcats;   //萤石广播
 
-
     @Override
     protected int initLayout() {
         return R.layout.fragment_main_layout;
     }
-
 
     @Override
     protected void initView() {
@@ -162,6 +160,9 @@ public class MainFragmentActivity extends BaseFragmentActivity {
                 mMainFragmentViewPager.setCurrentItem(2);
                 break;
             case R.id.rightTextView:
+                if (mWindowActivity == null){
+                    mWindowActivity = new WindowActivity();
+                }
                 break;
         }
     }

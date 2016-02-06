@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.example.administrator.bao.R;
 import com.example.base.base.BaseApplication;
 import com.example.base.base.BaseFragmentActivity;
+import com.example.base.utils.HttpUtils;
 import com.example.base.utils.LogUtils;
 
 /**
@@ -34,6 +35,11 @@ public class LoginActivity extends BaseFragmentActivity {
     @Override
     protected void initData() {
 
+        String str =  getDataEditor("wei");
+        if (str.equals("1")){
+            startActivity(new Intent(this,MainFragmentActivity.class));
+        }
+
         mRegistTextView.setOnClickListener(this);
         mForgetPassTextView.setOnClickListener(this);
     }
@@ -56,5 +62,7 @@ public class LoginActivity extends BaseFragmentActivity {
     }
     private void login(String userName,String passWord){
 
+        initSharedPreferences("wei");
+        pullDataEditor("isLogin",LOGIN);
     }
 }

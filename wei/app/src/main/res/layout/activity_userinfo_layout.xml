@@ -1,15 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/one_hundred_and_fifty">
+        android:layout_height="@dimen/one_hundred_and_fifty"
+        style="@style/view">
+
     <ImageView
-        android:id="@+id/userImageView"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:id="@+id/userIconImageView"
+        android:layout_width="@dimen/sixfty"
+        android:layout_height="@dimen/sixfty"
         android:layout_centerInParent="true"
-      />
+        android:background="@drawable/call_interface_diaerpad"
+        />
+
     </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/shenji"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/forty"
+        style="@style/view">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="升級"/>
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/forty"
+        android:text="@string/action_quit"
+        style="@style/view"/>
 </LinearLayout>

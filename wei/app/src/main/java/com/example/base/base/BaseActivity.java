@@ -95,7 +95,7 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
     protected void onResume() {
         super.onResume();
         isConneted = NetUtils.isNetworkConnected(mContext);
-        if (isConneted == false){
+        if (!isConneted){
             LogUtils.showToast(mContext,"网络已断开");
         }
     }

@@ -1,6 +1,8 @@
 package fragment;
 
 
+import android.widget.ImageView;
+
 import com.example.administrator.bao.R;
 import com.example.base.base.BaseFragmentActivity;
 
@@ -9,6 +11,7 @@ import com.example.base.base.BaseFragmentActivity;
  */
 public class MyFragment extends BaseFragmentActivity {
 
+    private ImageView mUserIconImageView;
 
     @Override
     protected int initLayout() {
