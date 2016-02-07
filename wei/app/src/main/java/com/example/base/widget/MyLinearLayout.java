@@ -25,19 +25,27 @@ public class MyLinearLayout extends LinearLayout {
     private ImageView mLinImageView;
     private TextView mLinTextView;
 
-//    public MyLinearLayout(Context context){
-//        super(context);
+    public MyLinearLayout(Context context){
+        super(context);
 //        View layout = LayoutInflater.from(context).inflate(R.layout.widget_linearlayout_layout,null);
 //        mLinImageView = (ImageView)layout.findViewById(R.id.linImageView);
 //        mLinTextView = (TextView)layout.findViewById(R.id.linTextView);
-//    }
+    }
 
     public MyLinearLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        View layout = LayoutInflater.from(context).inflate(R.layout.widget_linearlayout_layout,null);
-        mLinImageView = (ImageView)layout.findViewById(R.id.linImageView);
-        mLinTextView = (TextView)layout.findViewById(R.id.linTextView);
+        TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.MyLayout);
+        String text = a.getString(R.styleable.MyLayout_text);
+        Drawable resuId = a.getDrawable(R.styleable.MyLayout_backgroup);
+
+        LayoutInflater layout = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layout.inflate(R.layout.widget_linearlayout_layout,this);
+        mLinImageView = (ImageView)findViewById(R.id.linImageView);
+        mLinTextView = (TextView)findViewById(R.id.linTextView);
+
+        mLinImageView.setImageDrawable(resuId);
+        mLinTextView.setText(text);
     }
 
     public void setImageView(int resId){

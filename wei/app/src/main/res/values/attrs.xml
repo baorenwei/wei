@@ -6,7 +6,7 @@
     </declare-styleable>
 
     <declare-styleable name="MyLayout">
-        <attr name="backgroup" format="integer"></attr>
+        <attr name="backgroup" format="dimension"></attr>
         <attr name="text" format="string"></attr>
     </declare-styleable>
 </resources>

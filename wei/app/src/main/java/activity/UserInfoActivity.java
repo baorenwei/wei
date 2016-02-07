@@ -63,7 +63,7 @@ public class UserInfoActivity extends BaseFragmentActivity {
 
         switch (v.getId()){
             case R.id.shenji:
-                    UpdateActivity mActivity = new UpdateActivity(mContext);
+                    UpdateActivity mActivity = new UpdateActivity(this);
                 break;
             case R.id.userIconImageView:
                 showDialog();
@@ -172,6 +172,13 @@ public class UserInfoActivity extends BaseFragmentActivity {
 //                if (cameraBitmap != null){
 //                    LruCacheUtils.getInstance().addBitmapToMemoryCache("1",cameraBitmap);
 //                }
+                if (bitMap != null){
+                    Bitmap bit = BitmapUtils.getRoundBitmap(bitMap);
+                    mUserIconImageView.setImageBitmap(bit);
+                }else{
+//                        Bitmap bitmap1 = mContext.getResources().getDrawable(R.drawable.ic);
+                    mUserIconImageView.setImageResource(R.drawable.smssdk_search_icon);
+                }
                 hasImage = true;
                 break;
         }

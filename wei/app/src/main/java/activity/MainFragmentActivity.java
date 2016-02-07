@@ -64,14 +64,6 @@ public class MainFragmentActivity extends BaseFragmentActivity {
         mMainFragmentMy = (MyLinearLayout) findViewById(R.id.mainFragmentMy);
         mMainFragmentViewPager = (ViewPager)findViewById(R.id.mainFragmentViewPager);
 
-        mMainFragmentGroup.setImageView(R.drawable.ic_yuan);
-        mMainFragmentGroup.setTextView("聊天");
-
-        mMainFragmentMy.setImageView(R.drawable.ic_yuan);
-        mMainFragmentMy.setTextView("摄像头");
-
-        mMainFragmentMessage.setImageView(R.drawable.ic_yuan);
-        mMainFragmentMessage.setTextView("我的");
     }
 
     @Override
@@ -86,6 +78,8 @@ public class MainFragmentActivity extends BaseFragmentActivity {
         mMainFragmentMy.setOnClickListener(this);
         mMainFragmentMessage.setOnClickListener(this);
         initPagerAdapter();
+
+
 
 //        startActivity(new Intent(this, WindowActivity.class));
 //

@@ -9,7 +9,7 @@
         android:id="@+id/loginIconImageView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/one_hundred_and_fifty"
-        android:background="@drawable/ic_launcher"/>
+        android:background="@drawable/ic_yuan"/>
 
     <Button
         android:layout_width="match_parent"

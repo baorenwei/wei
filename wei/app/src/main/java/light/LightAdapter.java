@@ -48,10 +48,9 @@ public class LightAdapter<String> extends MyBaseAdapter implements View.OnClickL
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
 
-        ViewHolder mHolder = null;
-        final int posi = position;
+        final ViewHolder mHolder;
         if (convertView == null) {
             mHolder = new ViewHolder();
             convertView = mInfalter.inflate(R.layout.widget_listview_delete_item_layout, null);
@@ -77,13 +76,21 @@ public class LightAdapter<String> extends MyBaseAdapter implements View.OnClickL
         }
         mHolder.btOne.setTag(position);
         mHolder.btTwo.setTag(position);
-        convertView.setOnTouchListener(new View.OnTouchListener() {
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mHolder.hSView.smoothScrollTo(0, 0);
+                LogUtils.showLogI("带你了");
+            }
+        });
+        mHolder.content.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_POINTER_DOWN:
                         if (v != null) {
+                            LogUtils.showLogI("到了这里");
                             ViewHolder mHolder = (ViewHolder) v.getTag();
                             mHolder.hSView.smoothScrollTo(0, 0);
                         }
@@ -105,9 +112,6 @@ public class LightAdapter<String> extends MyBaseAdapter implements View.OnClickL
         if (mHolder.hSView.getScrollX() != 0){
             mHolder.hSView.scrollTo(0,0);
         }
-        // 设置背景颜色,设置填充内容.
-        mHolder.content.setBackgroundResource(R.color.bule);
-//        mHolder.mLightListViewImageView
         // 设置监听事件
         mHolder.btOne.setOnClickListener(this);
         mHolder.btTwo.setOnClickListener(this);
@@ -125,7 +129,6 @@ public class LightAdapter<String> extends MyBaseAdapter implements View.OnClickL
                 LogUtils.showLogI("点了Buttom2");
                 break;
         }
-        notifyDataSetChanged();
     }
 
     class ViewHolder {

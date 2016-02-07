@@ -15,5 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/linImageView"
+        android:layout_marginTop="@dimen/three"
+        android:textSize="@dimen/twelve"
         android:layout_centerInParent="true"/>
 </RelativeLayout>

@@ -136,46 +136,25 @@ public class LightActivity extends BaseFragmentActivity {
     @Override
     public void onClick(View v) {
         super.onClick(v);
-
         switch (v.getId()){
             case R.id.button:
                 break;
         }
     }
 
-    //得到数据库数据
-    private void getMetaData() {
-        String userName = null;
-        String sexs = null;
-        String email = null;
-        String date = null;
-        mResolver = mContext.getContentResolver();
-        Cursor c = mResolver.query(LightMeteDate.CONTENT_URI, null, LightMeteDate._ID + "=?", new String[]{"1"}, null);
-        if (c.moveToFirst()) {
-            userName = c.getString(c.getColumnIndex(LightMeteDate.USERNAME));
-            sexs = c.getString(c.getColumnIndex(LightMeteDate.SEX));
-            email = c.getString(c.getColumnIndex(LightMeteDate.EMAIL));
-            date = c.getString(c.getColumnIndex(LightMeteDate.DATE));
-        }
-        c.close();
-        textView.setText("userName--" + userName + "--sexs--" + sexs + "--email--" + email + "--date--" + date);
-
+    @Override
+    public void onRefresh(PullToRefreshBase refreshView) {
+        super.onRefresh(refreshView);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mListView.isRefreshing()) {
+                    mListView.onRefreshComplete();
+                }
+            }
+        }, 1000);
     }
 
-    //得到解析后的Json数据
-    private void getJsonData() {
-        LightDao.getJsonData(mContext, new LightCallBack() {
-            @Override
-            public void complete(LightBen ben) {
-                textView.setText("userName--" + ben.getUserName() + "--sexs--" + ben.getSex() + "--email--" + ben.getEmail() + "--date--" + ben.getData());
-            }
-
-            @Override
-            public void exception(Exception exception) {
-
-            }
-        });
-    }
 
 
     @Override
@@ -208,4 +187,36 @@ public class LightActivity extends BaseFragmentActivity {
         int x =  mListView.getScrollX();
     }
 
+    //得到数据库数据
+    private void getMetaData() {
+        String userName = null;
+        String sexs = null;
+        String email = null;
+        String date = null;
+        mResolver = mContext.getContentResolver();
+        Cursor c = mResolver.query(LightMeteDate.CONTENT_URI, null, LightMeteDate._ID + "=?", new String[]{"1"}, null);
+        if (c.moveToFirst()) {
+            userName = c.getString(c.getColumnIndex(LightMeteDate.USERNAME));
+            sexs = c.getString(c.getColumnIndex(LightMeteDate.SEX));
+            email = c.getString(c.getColumnIndex(LightMeteDate.EMAIL));
+            date = c.getString(c.getColumnIndex(LightMeteDate.DATE));
+        }
+        c.close();
+        textView.setText("userName--" + userName + "--sexs--" + sexs + "--email--" + email + "--date--" + date);
+
+    }
+
+    //得到解析后的Json数据
+    private void getJsonData() {
+        LightDao.getJsonData(mContext, new LightCallBack() {
+            @Override
+            public void complete(LightBen ben) {
+                textView.setText("userName--" + ben.getUserName() + "--sexs--" + ben.getSex() + "--email--" + ben.getEmail() + "--date--" + ben.getData());
+            }
+            @Override
+            public void exception(Exception exception) {
+
+            }
+        });
+    }
 }

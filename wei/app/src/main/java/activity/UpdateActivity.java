@@ -11,13 +11,8 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.example.administrator.bao.R;
-import com.example.base.base.BaseFragmentActivity;
-import com.example.base.utils.DialogUtils;
-import com.example.base.utils.LogUtils;
 import com.example.base.utils.UpdateInfoServiceUtils;
 
 import java.io.File;
@@ -56,7 +51,7 @@ public class UpdateActivity  {
     }
 
     private void init() {
-        Toast.makeText(mContext, "正在检查版本更新..", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(mContext, "正在检查版本更新..", Toast.LENGTH_SHORT).show();
         new Thread(new Runnable() {
             @Override
             public void run() {

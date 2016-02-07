@@ -8,6 +8,7 @@ import com.videogo.openapi.EZOpenSDK;
 import com.videogo.openapi.bean.EZAccessToken;
 import com.videogo.openapi.bean.EZCameraInfo;
 import com.videogo.openapi.bean.EZDeviceInfo;
+import com.videogo.openapi.bean.EZProbeDeviceInfo;
 import com.videogo.openapi.bean.EZUserInfo;
 
 import java.util.ArrayList;
@@ -122,5 +123,16 @@ public class CameraInterfaceUtils {
         boolean isStopWiFi = false;
         isStopWiFi = EZOpenSDK.getInstance().stopConfigWiFi();
         return isStopWiFi;
+    }
+
+    //5.4.9	尝试查询设备信息
+    public static EZProbeDeviceInfo probeDeviceInfo(String deviceSerial){
+        EZProbeDeviceInfo info =null;
+        try {
+            info = EZOpenSDK.getInstance().probeDeviceInfo(deviceSerial);
+        } catch (BaseException e) {
+            e.printStackTrace();
+        }
+        return info;
     }
 }
