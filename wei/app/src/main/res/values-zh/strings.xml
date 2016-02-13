@@ -24,4 +24,10 @@
     <string name="forget_pass">忘记密码</string>
     <string name="registered">注册</string>
 
+    <!-- 用户信息 -->
+    <string name="camera_get">相机获取</string>
+    <string name="gallery_get">图库获取</string>
+    <string name="please_select_a_photo">请选择图片来源</string>upgrade
+    <string name="upgrade">升级</string>
+    <string name="select_photo">选择图片</string>
 </resources>

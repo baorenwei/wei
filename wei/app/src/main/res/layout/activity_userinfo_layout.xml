@@ -10,15 +10,15 @@
 
     <ImageView
         android:id="@+id/userIconImageView"
-        android:layout_width="@dimen/sixfty"
-        android:layout_height="@dimen/sixfty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:background="@drawable/ic_yuan"
+        android:src="@drawable/ic_yuan"
         />
 
     </RelativeLayout>
     <LinearLayout
-        android:id="@+id/shenji"
+        android:id="@+id/upgrade"
         android:layout_width="match_parent"
         android:layout_height="@dimen/forty"
         style="@style/view">
@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="升級"/>
+            android:text="@string/upgrade"/>
     </LinearLayout>
 
     <Button

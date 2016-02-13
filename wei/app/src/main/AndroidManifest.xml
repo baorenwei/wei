@@ -55,7 +55,7 @@
         android:hardwareAccelerated="false"
         android:theme="@style/AppTheme" >
         <activity
-        android:name="activity.UserInfoActivity"
+        android:name="light.LightActivity"
             android:label="@string/app_name"
             android:theme="@style/ActivityTheme_Light" >
 

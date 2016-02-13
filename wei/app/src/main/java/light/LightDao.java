@@ -7,12 +7,14 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.example.base.base.Conn;
+import com.example.base.utils.HttpUtil;
 import com.example.base.utils.HttpUtils;
 import com.example.base.utils.LogUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,18 +55,21 @@ public class LightDao {
     //解析json数据
     public static LightBen getJsonData(Context context, LightCallBack callback) {
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("access_token", "7b38c6c5-b5e4-492b-a699-c7d3c0eaf58f");
-        String json = HttpUtils.httpPost(Conn.UPDATE_PICTURE, map, "POST",null);
+        Map<String, String> parent = new HashMap<>();
+        parent.put("access_token", "7b38c6c5-b5e4-492b-a699-c7d3c0eaf58f");
+        parent.put("email", "15986773816@163.com");
+        String[] file = {"storage/sdcard1/temp00.jpg"};
         try {
+            String json = HttpUtil.postType(Conn.EMAIL_CODE, parent, null,"POST");
             JSONObject obj = new JSONObject(json);
-            String access_token = obj.getString("access_token");
-            LogUtils.showLogI(obj + "");
-        } catch (JSONException e) {
+            LogUtils.showLogI(obj+"");
+//            String access_token = obj.getString("message");
+//            LogUtils.showLogI(access_token + "");
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        LightBen ben = updateData(context, "bao", "bao", "bao", "bao");
-        callback.complete(ben);
+//        LightBen ben = updateData(context, "bao", "bao", "bao", "bao");
+//        callback.complete(ben);
         return null;
     }
 }

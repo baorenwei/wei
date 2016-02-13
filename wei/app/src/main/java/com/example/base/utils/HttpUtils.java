@@ -44,116 +44,10 @@ import light.LightImage;
  */
 public class HttpUtils {
 
-    /**
-     * 普通文本参数的提交
-     *
-     * @param url
-     * @param params
-     * @return
-     */
-    public static String httpPost(String url, Map<String, Object> params, String str,String[] uploadFiles) {
-
-        String end = "\r\n";
-        String twoHyphens = "--";
-        String boundary = "*****";
-
-        DataOutputStream ds = null;
-        InputStream is = null;
-        try {
-            StringBuffer sb = paseMap(params);
-            URL uri = new URL(url);
-            URLConnection conn = uri.openConnection();
-            HttpURLConnection connection = (HttpURLConnection) conn;
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
-            connection.setConnectTimeout(5000);
-            connection.setUseCaches(false);
-            connection.setRequestProperty("Content-type", "application/x-www-form-urlencoded");
-            connection.setRequestProperty("accept", "*/*");
-            connection.setRequestProperty("Charset", "UTF-8");
-            connection.setRequestProperty("connection", "Keep-Alive");
-            connection.setRequestProperty("Content-Type",
-            "multipart/form-data;boundary=" + boundary);
-            connection.setRequestMethod(str);
-            connection.connect();   //请求连接
-
-            //上传文本
-            byte[] bytes = sb.toString().getBytes();
-            connection.getOutputStream().write(bytes);
-            //上传文件
-            ds = new DataOutputStream(connection.getOutputStream());
-            for (int i = 0; i < uploadFiles.length; i ++){
-                String uploadFile = uploadFiles[i];
-                String fileName = uploadFile.substring(uploadFile.lastIndexOf("//") + 1);
-                ds.writeBytes(twoHyphens + boundary + end);
-//                ds.writeBytes();
-                ds.writeBytes(end);
-                FileInputStream fis = new FileInputStream(uploadFile);
-                int len = -1;
-                byte[] b = new byte[1024];
-                while((len = fis.read(b)) != -1){
-                    ds.write(b,0,len);
-                }
-                ds.writeBytes(end);
-                fis.close();
-            }
-            ds.writeBytes(twoHyphens + boundary + twoHyphens + end);
-            ds.flush();
-
-            is = connection.getInputStream();
-            return readInput(is);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-                try {
-                    if (is != null) {
-                    is.close();
-                    }
-                    if (ds != null){
-                        ds.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-            }
-        }
-        return null;
-    }
-
-    private static StringBuffer paseMap(Map<String, Object> params) {
-        StringBuffer sb = null;
-        if (sb == null) {
-            sb = new StringBuffer();
-        }
-        Iterator it = params.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry element = (Map.Entry) it.next();
-            sb.append(element.getKey());
-            sb.append("=");
-            sb.append(element.getValue());
-            sb.append("&");
-        }
-        return sb;
-    }
-
-    private static String readInput(InputStream is) throws IOException {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-        byte[] buffer = new byte[1024];
-        int len = 0;
-        while ((len = is.read(buffer)) != -1) {
-            outputStream.write(buffer, 0, len);
-        }
-        byte[] b = outputStream.toByteArray();
-        String json = new String(b);
-        outputStream.close();
-        is.close();
-        return json;
-    }
-
     //图片下载
     public static void downLoadImage(Object object, Context context) throws FileNotFoundException {
 
+        //根据图片地址下载
         if (object instanceof String) {
             Bitmap bitmap = LruCacheUtils.getInstance().getBitmapFromMemoryCache((String) object);
             if (bitmap == null) {
@@ -163,7 +57,9 @@ public class HttpUtils {
                 }
                 task.execute(object);
             }
-        } else if (object instanceof Integer) {
+        }
+        //根据位置下载
+        else if (object instanceof Integer) {
             Bitmap bitmap = LruCacheUtils.getInstance().getBitmapFromMemoryCache(LightImage.imageThumbUrls[(Integer) object]);
             if (bitmap == null) {
                 LoadPositionImageTask task = null;
@@ -175,6 +71,7 @@ public class HttpUtils {
         }
     }
 
+    //图片地址
     static class LoadUrlImageTask extends AsyncTask<Object, Void, Bitmap> {
 
         String mImageUrl;
@@ -281,6 +178,7 @@ public class HttpUtils {
     }
 
 
+    //图片位置
     static class LoadPositionImageTask extends AsyncTask<Object, Void, Bitmap> {
         private String mImageUrl;
         private int position;

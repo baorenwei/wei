@@ -27,5 +27,6 @@ dependencies {
     compile project(':smssdk')
     compile project(':listview')
     compile project(':zxing')
+    compile files('libs/android-async-http-1.4.8.jar')
 }
 

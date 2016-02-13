@@ -35,6 +35,7 @@ import com.example.base.utils.ThreadPollUtils;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshExpandableListView;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.loopj.android.http.AsyncHttpClient;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -130,7 +131,7 @@ public class LightActivity extends BaseFragmentActivity {
     @Override
     public void run() {
         super.run();
-//        getJsonData();
+        getJsonData();
     }
 
     @Override
@@ -211,7 +212,7 @@ public class LightActivity extends BaseFragmentActivity {
         LightDao.getJsonData(mContext, new LightCallBack() {
             @Override
             public void complete(LightBen ben) {
-                textView.setText("userName--" + ben.getUserName() + "--sexs--" + ben.getSex() + "--email--" + ben.getEmail() + "--date--" + ben.getData());
+//                textView.setText("userName--" + ben.getUserName() + "--sexs--" + ben.getSex() + "--email--" + ben.getEmail() + "--date--" + ben.getData());
             }
             @Override
             public void exception(Exception exception) {
