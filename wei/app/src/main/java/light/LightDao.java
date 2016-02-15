@@ -5,6 +5,10 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
+import android.os.Environment;
+import android.os.Handler;
+import android.util.Log;
 
 import com.example.base.base.Conn;
 import com.example.base.utils.HttpUtil;
@@ -19,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import Interface.LightCallBack;
+import model.FormFile;
 
 /**
  * Created by Administrator on 2016/1/9.
@@ -56,13 +61,22 @@ public class LightDao {
     public static LightBen getJsonData(Context context, LightCallBack callback) {
 
         Map<String, String> parent = new HashMap<>();
+        Map<String, File> file = new HashMap<>();
+//        parent.put("mobile", "13316584270");
+//        parent.put("userName", "aaa");
+//        parent.put("password", "123456");
+//        parent.put("client_id", "1");
+//        parent.put("client_secret", "1");
+//        parent.put("grant_type", "1");
         parent.put("access_token", "7b38c6c5-b5e4-492b-a699-c7d3c0eaf58f");
-        parent.put("email", "15986773816@163.com");
-        String[] file = {"storage/sdcard1/temp00.jpg"};
+//        parent.put("access_token", "4716663d-78c7-43c2-ab50-e7331520892e");
+        File file1 = new File(Uri.parse("file:///storage/sdcard1/temp00.jpg").getPath());
+        LogUtils.showLogI(file1.getName() + "");
+        file.put(file1.getName(), file1);
         try {
-            String json = HttpUtil.postType(Conn.EMAIL_CODE, parent, null,"POST");
-            JSONObject obj = new JSONObject(json);
-            LogUtils.showLogI(obj+"");
+            String json = HttpUtil.postType(Conn.UPDATE_PICTURE, parent, file, "POST");
+//            JSONObject obj = new JSONObject(json);
+            LogUtils.showLogI(json+"");
 //            String access_token = obj.getString("message");
 //            LogUtils.showLogI(access_token + "");
         } catch (Exception e) {
@@ -72,4 +86,5 @@ public class LightDao {
 //        callback.complete(ben);
         return null;
     }
+
 }

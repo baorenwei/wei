@@ -35,7 +35,6 @@ import com.example.base.utils.ThreadPollUtils;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshExpandableListView;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
-import com.loopj.android.http.AsyncHttpClient;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -43,11 +42,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import Interface.LightCallBack;
 import door.DoorActivity;
+import model.FormFile;
 
 /**
  * Created by Administrator on 2016/1/10.
@@ -99,7 +101,15 @@ public class LightActivity extends BaseFragmentActivity {
         mListView = (PullToRefreshListView) findViewById(R.id.listView);
         mLinearLayout = (RelativeLayout) findViewById(R.id.linearLayout);
 
+    }
 
+    @Override
+    protected void initData() {
+
+        ThreadPollUtils.addCachedThreadPoll(new LightActivity());
+        commit.setOnClickListener(this);
+        button.setOnClickListener(this);
+        //初始化ListView数据
         mAdapter = new LightAdapter<String>(mContext,getDisplayMetrics(1));
         mList = new ArrayList<>();
         for (int i = 0; i < LightImage.imageThumbUrls.length; i++) {
@@ -111,21 +121,13 @@ public class LightActivity extends BaseFragmentActivity {
         mListView.setOnRefreshListener(this);
         mListView.setMode(PullToRefreshBase.Mode.BOTH);  //下拉和上拉都会执行onRefresh()中的方法了。
         mListView.setOnScrollListener(this);
-    }
 
-    @Override
-    protected void initData() {
-
-        ThreadPollUtils.addCachedThreadPoll(new LightActivity());
-        commit.setOnClickListener(this);
-        button.setOnClickListener(this);
-        mListView.setOnScrollListener(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        getMetaData();
+//        getMetaData();
     }
 
     @Override
@@ -166,7 +168,6 @@ public class LightActivity extends BaseFragmentActivity {
         int index = firstVisibleItem;
 
         for (int i = 0; i < visiItemCount; i++){
-
             if (index == LightImage.imageThumbUrls.length){
                 break;
             }
@@ -214,6 +215,7 @@ public class LightActivity extends BaseFragmentActivity {
             public void complete(LightBen ben) {
 //                textView.setText("userName--" + ben.getUserName() + "--sexs--" + ben.getSex() + "--email--" + ben.getEmail() + "--date--" + ben.getData());
             }
+
             @Override
             public void exception(Exception exception) {
 

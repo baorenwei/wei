@@ -50,4 +50,13 @@
         </LinearLayout>
     </LinearLayout>
 
+    <ListView
+        android:id="@+id/actbarListView"
+        android:layout_width="@dimen/one_hundred_and_fifty"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/fifteen"
+        android:layout_marginRight="@dimen/nine"
+        android:visibility="gone"
+        android:layout_height="wrap_content"></ListView>
+
 </RelativeLayout>

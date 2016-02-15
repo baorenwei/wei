@@ -1,16 +1,28 @@
 package com.example.base.utils;
 
+import android.util.Log;
+
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import model.FormFile;
 
 /**
  * Created by Administrator on 2016/2/13.
@@ -18,7 +30,7 @@ import java.util.Map;
 public class HttpUtil {
 
 
-    public static String postType(String actionUrl, Map<String, String> params, String[] files, String method) throws IOException {
+    public static String postType(String actionUrl, Map<String, String> params, Map<String, File> files, String method) throws IOException {
         if(files == null){
             return httpPost(actionUrl,params,method);
         }else{
@@ -54,6 +66,7 @@ public class HttpUtil {
             connection.getOutputStream().write(bytes);
 
             is = connection.getInputStream();
+            LogUtils.showLogI(connection.getResponseCode()+"");
             return readInput(is);
 
         } catch (Exception e) {
@@ -81,53 +94,79 @@ public class HttpUtil {
      * @param files 文件参数
      * @return
      */
-    public static String post(String actionUrl, Map<String, String> params, String[] files, String method) throws IOException
-    {
+    public static String post(String actionUrl, Map<String, String> params, Map<String, File> files,String method) throws IOException {
+
+        String newName = "htys.mp3";
+
+        //要上传的本地文件路径
+
+         String uploadFile = "/data/data/com.xzq/htys.mp3";
+
         String end = "/r/n";
-        String twoHyphens = "--";
+
+        String Hyphens = "--";
+
         String boundary = "*****";
 
-        URL uri = new URL(actionUrl);
-        HttpURLConnection conn = (HttpURLConnection) uri.openConnection();
-        conn.setReadTimeout(5 * 1000); // 缓存的最长时间
-        conn.setDoInput(true);// 允许输入
-        conn.setDoOutput(true);// 允许输出
-        conn.setUseCaches(false); // 不允许使用缓存
-        conn.setRequestMethod(method);
-        conn.setRequestProperty("Connection", "Keep-Alive");
-        conn.setRequestProperty("Charset", "UTF-8");
-        conn.setRequestProperty("Content-Type",
-                "multipart/form-data;boundary=" + boundary);
+            URL url = new URL(actionUrl);
 
-        // 首先组拼文本类型的参数
-        StringBuffer sb = paseMap(params);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
-        DataOutputStream ds = new DataOutputStream(conn.getOutputStream());
-        ds.write(sb.toString().getBytes());
+      /* 允许Input、Output，不使用Cache */
 
-        for (int i = 0; i < files.length; i++) {
-            String uploadFile = files[i];
-            String filename = uploadFile.substring(uploadFile.lastIndexOf("//") + 1);
-            ds.writeBytes(twoHyphens + boundary + end);
-//            ds.writeBytes("Content-Disposition: form-data; " +
-//                            "name=/"file" + i + "/";filename=/"" +
-//                    filename + "/"" + end);
-                    ds.writeBytes(end);
+            con.setDoInput(true);
+
+            con.setDoOutput(true);
+
+            con.setUseCaches(false);
+
+      /* 设定传送的method=POST */
+
+            con.setRequestMethod("POST");
+
+      /* setRequestProperty */
+
+            con.setRequestProperty("Connection", "Keep-Alive");
+
+            con.setRequestProperty("Charset", "UTF-8");
+
+            con.setRequestProperty("Content-Type",
+
+                    "multipart/form-data;boundary=" + boundary);
+
+      /* 设定DataOutputStream */
+            DataOutputStream ds = new DataOutputStream(con.getOutputStream());
+            ds.writeBytes(Hyphens + boundary + end);
+//            ds.writeBytes("Content-Disposition: form-data; "
+//                    + "name=/"file1/";filename=/"" + newName + "/"" + end);
+            ds.writeBytes(end);
+      /* 取得文件的FileInputStream */
             FileInputStream fStream = new FileInputStream(uploadFile);
+      /* 设定每次写入1024bytes */
             int bufferSize = 1024;
             byte[] buffer = new byte[bufferSize];
             int length = -1;
-            while ((length = fStream.read(buffer)) != -1) {
+      /* 从文件读取数据到缓冲区 */
+            while ((length = fStream.read(buffer)) != -1)
+            {
+        /* 将数据写入DataOutputStream中 */
                 ds.write(buffer, 0, length);
             }
             ds.writeBytes(end);
-              /* close streams */
+            ds.writeBytes(Hyphens + boundary + Hyphens + end);
             fStream.close();
-        }
-        ds.writeBytes(twoHyphens + boundary + twoHyphens + end);
-        ds.flush();
-        String json = readInput(conn.getInputStream());
-        return json;
+            ds.flush();
+      /* 取得Response内容 */
+            InputStream is = con.getInputStream();
+            int ch;
+            StringBuffer b = new StringBuffer();
+            while ((ch = is.read()) != -1)
+            {
+                b.append((char) ch);
+            }
+            System.out.println("上传成功");
+            ds.close();
+        return null;
     }
 
     //拼接文本参数
@@ -137,6 +176,22 @@ public class HttpUtil {
             sb = new StringBuffer();
         }
         Iterator it = params.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry element = (Map.Entry) it.next();
+            sb.append(element.getKey());
+            sb.append("=");
+            sb.append(element.getValue());
+            sb.append("&");
+        }
+        return sb;
+    }
+
+    private static StringBuffer paseMaps(Map<String, File > file) {
+        StringBuffer sb = null;
+        if (sb == null) {
+            sb = new StringBuffer();
+        }
+        Iterator it = file.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry element = (Map.Entry) it.next();
             sb.append(element.getKey());

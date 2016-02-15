@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/userIconImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/one_hundred"
+        android:layout_height="@dimen/one_hundred"
         android:layout_centerInParent="true"
         android:src="@drawable/ic_yuan"
         />

@@ -1,6 +1,8 @@
 package activity;
 
+import android.app.AlertDialog;
 import android.app.LocalActivityManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Handler;
@@ -9,15 +11,21 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
+import android.widget.AdapterView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.example.administrator.bao.R;
 import com.example.base.base.BaseFragmentActivity;
@@ -39,7 +47,7 @@ import fragment.ThredFragment;
 /**
  * Created by Administrator on 2016/1/6.
  */
-public class MainFragmentActivity extends BaseFragmentActivity {
+public class MainFragmentActivity extends BaseFragmentActivity implements View.OnTouchListener{
 
     private String[] tagList = { "one", "two", "thread"};
     private ViewPager mMainFragmentViewPager;
@@ -51,6 +59,9 @@ public class MainFragmentActivity extends BaseFragmentActivity {
     private MyLinearLayout mMainFragmentMy;
 
     private CameraBroadcats mCameraBroadcats;   //萤石广播
+    private ListView mActionBarListView;
+
+    Boolean mIsShow = false;  //ListView是否显示
 
     @Override
     protected int initLayout() {
@@ -63,6 +74,7 @@ public class MainFragmentActivity extends BaseFragmentActivity {
         mMainFragmentGroup = (MyLinearLayout) findViewById(R.id.mainFragmentGroup);
         mMainFragmentMy = (MyLinearLayout) findViewById(R.id.mainFragmentMy);
         mMainFragmentViewPager = (ViewPager)findViewById(R.id.mainFragmentViewPager);
+        mActionBarListView = (ListView)findViewById(R.id.actbarListView);
 
     }
 
@@ -73,27 +85,14 @@ public class MainFragmentActivity extends BaseFragmentActivity {
         setRightTextView("右边");
         setTitleTextView("小包");
 
-
         mMainFragmentGroup.setOnClickListener(this);
         mMainFragmentMy.setOnClickListener(this);
         mMainFragmentMessage.setOnClickListener(this);
+
         initPagerAdapter();
+        addListViewItem();
 
 
-
-//        startActivity(new Intent(this, WindowActivity.class));
-//
-//        new  Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                WindowActivity activity = null;
-//                if (activity == null){
-//                    activity = new WindowActivity();
-//                }
-//                activity.finshWindow();
-//            }
-//        },3000);
-//        sendYINGbroad();
     }
 
     @Override
@@ -109,7 +108,7 @@ public class MainFragmentActivity extends BaseFragmentActivity {
         mCameraBroadcats = new CameraBroadcats();
         IntentFilter filter = new IntentFilter();
         filter.addAction(Constant.OAUTH_SUCCESS_ACTION);
-        registerReceiver(mCameraBroadcats,filter);
+        registerReceiver(mCameraBroadcats, filter);
         mCameraBroadcats.onReceive(this, intent);
     }
 
@@ -154,10 +153,77 @@ public class MainFragmentActivity extends BaseFragmentActivity {
                 mMainFragmentViewPager.setCurrentItem(2);
                 break;
             case R.id.rightTextView:
-                if (mWindowActivity == null){
-                    mWindowActivity = new WindowActivity();
+
+                if(mIsShow == false){
+                    visibleListView();
+                    mIsShow = true;
+                }else{
+                    gomeListView();
+                    mIsShow = false;
                 }
                 break;
         }
+    }
+
+    private void addListViewItem() {
+        String[] titles = {"title1", "title2", "title3", "title4", "title5", "title6"};
+        int[] drawableIds = {R.drawable.ic_yuan, R.drawable.ic_yuan, R.drawable.ic_yuan,
+                R.drawable.ic_yuan, R.drawable.ic_yuan, R.drawable.ic_yuan};
+
+        setListViewItem(drawableIds, titles);
+    }
+
+    //    设置ListView Item的数据
+    public void setListViewItem(int[] drawable, String[] titles) {
+        List<Map<String, Object>> mListViewList = new ArrayList<>();
+        Map<String, Object> map = new HashMap<>();
+        for (int i = 0; i < titles.length; i++) {
+            map.put("title", titles[i]);
+            map.put("drawable", drawable[i]);
+            mListViewList.add(map);
+        }
+        SimpleAdapter adapter = new SimpleAdapter(this, mListViewList, R.layout.widget_action_bar_listview_item,
+                new String[]{"title", "drawable"},
+                new int[]{R.id.actionBarTextView, R.id.actionBarImageView});
+        mActionBarListView.setAdapter(adapter);
+        mActionBarListView.setOnItemClickListener(this);
+    }
+
+    //显示ListView
+    public void visibleListView() {
+        AnimationSet set = new AnimationSet(true);
+        ScaleAnimation scaleAnimation = new ScaleAnimation(0, 0.1f, 0, 0.1f, Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0);
+        scaleAnimation.setDuration(10);
+        set.addAnimation(scaleAnimation);
+        mActionBarListView.setVisibility(View.VISIBLE);
+        mActionBarListView.startAnimation(set);
+    }
+
+    //隐藏ListView
+    public void gomeListView() {
+        AnimationSet set = new AnimationSet(true);
+        ScaleAnimation scaleAnimation = new ScaleAnimation(1f, 0, 1f, 0, Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0);
+        scaleAnimation.setDuration(500);
+        set.addAnimation(scaleAnimation);
+        set.setFillAfter(true);
+        mActionBarListView.startAnimation(set);
+        mActionBarListView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            gomeListView();
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+
+        switch (event.getAction()){
+            case MotionEvent.ACTION_POINTER_DOWN:
+                LogUtils.showLogI("点了");
+                break;
+        }
+        return true;
     }
 }

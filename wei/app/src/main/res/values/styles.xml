@@ -24,11 +24,14 @@
     <style name="ActivityTheme_Light" parent="android:Theme.Holo.Light">
         <item name="android:actionBarStyle">@style/actionbar_def_style</item>
     </style>
-    
+    <!--窗口风格 -->
     <style name="windowActivity" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground"> @color/transparent</item>
+    </style>
+    <!-- 窗口列表-->
+    <style name="windowListActivity" parent="android:style/Theme.Dialog">
         <item name="android:windowBackground"> @color/white</item>
     </style>
-
     <!-- -->
     <style name="mainFragmentRadioButton" >
         <item name="android:layout_weight">1</item>

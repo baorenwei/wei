@@ -29,101 +29,105 @@ import java.util.logging.MemoryHandler;
 /**
  * Created by Administrator on 2016/1/14.
  */
-public class LightAdapter<String> extends MyBaseAdapter implements View.OnClickListener{
+public class LightAdapter<String> extends MyBaseAdapter implements View.OnClickListener {
 
     private LayoutInflater mInfalter;
     private Context mContext;
     private Bitmap mBitmap;
     private int mScreentWidth;
-    int mFirstButtomWidth;
-    int ViewWidth;
+    private int mItemPosition;
 
-    LightAdapter(Context mContext,int mScreentWidth) {
+    LightAdapter(Context mContext, int mScreentWidth) {
         mInfalter = LayoutInflater.from(mContext);
         this.mContext = mContext;
         this.mScreentWidth = mScreentWidth;
     }
-    public  void setBitmap(Bitmap bitmap){
+
+    public void setBitmap(Bitmap bitmap) {
         this.mBitmap = bitmap;
     }
 
-    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        final ViewHolder mHolder;
+        ViewHolder holder;
         if (convertView == null) {
-            mHolder = new ViewHolder();
-            convertView = mInfalter.inflate(R.layout.widget_listview_delete_item_layout, null);
-            mHolder.hSView = (HorizontalScrollView) convertView.findViewById(R.id.hsv);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.widget_listview_delete_item_layout,null);
+            holder = new ViewHolder();
 
-            mHolder.action = convertView.findViewById(R.id.ll_action);
-            ViewWidth =  mHolder.action.getWidth();
-            mHolder.btOne = (Button) convertView.findViewById(R.id.deleteItemButtom);
-            mFirstButtomWidth = mHolder.btOne.getWidth();
-            mHolder.btTwo = (Button) convertView.findViewById(R.id.stickItemButtom);
-            mHolder.mLightListViewImageView = (ImageView) convertView.findViewById(R.id.lightListViewImageView);
-            mHolder.content = convertView.findViewById(R.id.ll_content);
-            LayoutParams params =  mHolder.content.getLayoutParams();
-            params.width = mScreentWidth;
-            convertView.setTag(mHolder);
-        }else{
-            mHolder = (ViewHolder)convertView.getTag();
+            holder.hSView = (HorizontalScrollView) convertView.findViewById(R.id.hsv);
+            holder.action = convertView.findViewById(R.id.ll_action);
+            holder.btOne = (Button) convertView.findViewById(R.id.deleteItemButtom);
+            holder.btTwo = (Button) convertView.findViewById(R.id.stickItemButtom);
+            holder.mLightListViewImageView = (ImageView)convertView.findViewById(R.id.lightListViewImageView);
+            // 设置内容view的大小为屏幕宽度,这样按钮就正好被挤出屏幕外
+            holder.content = convertView.findViewById(R.id.ll_content);
+            LayoutParams lp = holder.content.getLayoutParams();
+            lp.width = mScreentWidth;
+
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
-        if (mBitmap == null){
-            mHolder.mLightListViewImageView.setImageResource(R.drawable.smssdk_search_icon);
+        // 把位置放到view中,这样点击事件就可以知道点击的是哪一条item
+        holder.btOne.setTag(position);
+        holder.btTwo.setTag(position);
+
+        if(mBitmap != null){
+            holder.mLightListViewImageView.setImageBitmap(mBitmap);
         }else{
-            mHolder.mLightListViewImageView.setImageBitmap(mBitmap);
+            holder.mLightListViewImageView.setImageResource(R.drawable.ic_yuan);
         }
-        mHolder.btOne.setTag(position);
-        mHolder.btTwo.setTag(position);
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mHolder.hSView.smoothScrollTo(0, 0);
-                LogUtils.showLogI("带你了");
-            }
-        });
-        mHolder.content.setOnTouchListener(new View.OnTouchListener() {
+        // 设置监听事件
+        convertView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-
                 switch (event.getAction()) {
-                    case MotionEvent.ACTION_POINTER_DOWN:
+                    case MotionEvent.ACTION_DOWN:
                         if (v != null) {
-                            LogUtils.showLogI("到了这里");
-                            ViewHolder mHolder = (ViewHolder) v.getTag();
-                            mHolder.hSView.smoothScrollTo(0, 0);
+                            ViewHolder viewHolder1 = (ViewHolder)v .getTag();
+                            viewHolder1.hSView.smoothScrollTo(0, 0);
+                            if(v.getTag() == v.getTag()){
+                                viewHolder1.hSView.smoothScrollTo(0, 0);
+                            }else{
+                                viewHolder1.hSView.smoothScrollTo(0, 0);
+                            }
                         }
-                        break;
-                    case MotionEvent.ACTION_POINTER_UP:
-                        ViewHolder mHolder = (ViewHolder) v.getTag();
-                        int scrollX = mHolder.hSView.getScrollX();
-                        int actionW = mHolder.action.getWidth();
-                        if (scrollX < actionW / 2) {
-                            mHolder.hSView.smoothScrollTo(0, 0);
-                        } else {
-                            mHolder.hSView.smoothScrollTo(actionW, 0);
+                    case MotionEvent.ACTION_UP:
+                        ViewHolder viewHolder = (ViewHolder) v.getTag();
+//                        view = v;
+                        int scrollX = viewHolder.hSView.getScrollX();
+                        int actionW = viewHolder.action.getWidth();
+
+                        // 注意使用smoothScrollTo,这样效果看起来比较圆滑,不生硬
+                        // 如果水平方向的移动值<操作区域的长度的一半,就复原
+                        if (scrollX < actionW / 1.5) {
+                            viewHolder.hSView.smoothScrollTo(0, 0);
+                        } else // 否则的话显示操作区域
+                        {
+                            viewHolder.hSView.smoothScrollTo(actionW, 0);
                         }
                         return true;
                 }
                 return false;
             }
         });
-        if (mHolder.hSView.getScrollX() != 0){
-            mHolder.hSView.scrollTo(0,0);
-        }
-        // 设置监听事件
-        mHolder.btOne.setOnClickListener(this);
-        mHolder.btTwo.setOnClickListener(this);
 
+        // 这里防止删除一条item后,ListView处于操作状态,直接还原
+        if (holder.hSView.getScrollX() != 0) {
+            holder.hSView.scrollTo(0, 0);
+        }
+
+        // 设置监听事件
+        holder.btOne.setOnClickListener(this);
+        holder.btTwo.setOnClickListener(this);
         return convertView;
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.deleteItemButtom:
-                LogUtils.showLogI("点了Buttom1");
+                delete((int)v.getTag());
                 break;
             case R.id.stickItemButtom:
                 LogUtils.showLogI("点了Buttom2");
@@ -131,14 +135,20 @@ public class LightAdapter<String> extends MyBaseAdapter implements View.OnClickL
         }
     }
 
-    class ViewHolder {
-        public HorizontalScrollView hSView;
+    private void delete(int position){
 
+            mList.remove(position);
+        notifyDataSetChanged();
+    }
+
+    class ViewHolder {
+
+        public HorizontalScrollView hSView;
         public View content;
         public ImageView mLightListViewImageView;
-
         public View action;
         public Button btOne;
         public Button btTwo;
     }
+
 }

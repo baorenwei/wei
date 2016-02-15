@@ -13,6 +13,12 @@ public class Conn {
 
     public static final String REGIST = BASE_URL + "v1.0/users/emailExist";
 
+    //用户注册
+    public static final String USER_REGIST = BASE_URL + "v1.0/users/register";
+    //用户登录
+    public static final String USER_LOGIN = BASE_URL + "oauth/token";
+    //获取短信验证码
+    public static final String GET_SMS_CODE = BASE_URL + "v1.0/users/getSMS";
     //更改头像
     public static final String UPDATE_PICTURE = BASE_URL + "v1.0/users/upHeadThumb";
     //用户反馈

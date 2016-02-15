@@ -40,7 +40,7 @@ public class WindowListView extends Activity implements OnItemClickListener{
 
     private void initView() {
 
-        mActionBarListView = (ListView)findViewById(R.id.actbarListView);
+//        mActionBarListView = (ListView)findViewById(R.id.actbarListView);
     }
 
     private void initData() {
