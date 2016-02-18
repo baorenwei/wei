@@ -46,7 +46,7 @@ import java.io.InputStream;
 /**
  * Created by Administrator on 2016/1/28.
  */
-public class UserInfoActivity extends Activity {
+public class UserInfoActivity extends BaseFragmentActivity {
 
     RefreshableView refreshableView;
 
@@ -79,39 +79,21 @@ public class UserInfoActivity extends Activity {
         }
     };
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_userinfo_layout);
-        initView();
-
-
+        @Override
+    protected int initLayout() {
+        return R.layout.activity_userinfo_layout;
     }
 
-    //    @Override
-//    protected int initLayout() {
-//        return R.layout.activity_userinfo_layout;
-//    }
-
-//    @Override
+    @Override
     protected void initView() {
 
         mUserIconImageView = (ImageView) findViewById(R.id.userIconImageView);
-//        mUpgrade = (LinearLayout) findViewById(R.id.upgrade);
+        mUpgrade = (LinearLayout) findViewById(R.id.upgrade);
 
         refreshableView = (RefreshableView) findViewById(R.id.refreshable_view);
-//        listView = (ListView)findViewById(R.id.list_view);
-//
-//        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
-//        listView.setAdapter(adapter);
         refreshableView.setOnRefreshListener(new RefreshableView.PullToRefreshListener() {
             @Override
             public void onRefresh() {
-//                try {
-////                    Thread.sleep(3000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
                 refreshableView.finishRefreshing();
             }
         }, 0);
@@ -127,7 +109,7 @@ public class UserInfoActivity extends Activity {
 
     private void toLeft(){
         TranslateAnimation animation = new TranslateAnimation
-                (10,-10,0,0);
+                (5,-5,0,0);
         animation.setDuration(300);
         mUserIconImageView.startAnimation(animation);
         animation.setAnimationListener(new Animation.AnimationListener() {
@@ -138,7 +120,6 @@ public class UserInfoActivity extends Activity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-//                animation.setRepeatCount(3);
                 fromToRight();
             }
 
@@ -150,7 +131,7 @@ public class UserInfoActivity extends Activity {
     }
     private void  fromToLeft(){
         TranslateAnimation animation = new TranslateAnimation
-                (10,-10,0,0);
+                (5,-5,0,0);
         animation.setDuration(300);
         mUserIconImageView.startAnimation(animation);
         animation.setAnimationListener(new Animation.AnimationListener() {
@@ -173,7 +154,7 @@ public class UserInfoActivity extends Activity {
 
     private void to(){
         TranslateAnimation animation = new TranslateAnimation
-                (-10,0,0,0);
+                (-5,0,0,0);
         animation.setDuration(300);
         mUserIconImageView.startAnimation(animation);
         animation.setAnimationListener(new Animation.AnimationListener() {
@@ -185,7 +166,7 @@ public class UserInfoActivity extends Activity {
             @Override
             public void onAnimationEnd(Animation animation) {
 //                animation.setRepeatCount(3);
-                mHandler.postDelayed(runn,2000);
+                mHandler.postDelayed(runn, 2000);
             }
 
             @Override
@@ -197,7 +178,7 @@ public class UserInfoActivity extends Activity {
 
     private void  fromToRight(){
         TranslateAnimation animation = new TranslateAnimation
-                (-10,10,0,0);
+                (-5,5,0,0);
         animation.setDuration(300);
         mUserIconImageView.startAnimation(animation);
         animation.setAnimationListener(new Animation.AnimationListener() {
@@ -220,7 +201,7 @@ public class UserInfoActivity extends Activity {
 
     private void toRight(){
         TranslateAnimation animation = new TranslateAnimation
-                (0,10,0,0);
+                (0,5,0,0);
         animation.setDuration(300);
         mUserIconImageView.startAnimation(animation);
         animation.setAnimationListener(new Animation.AnimationListener() {
@@ -241,19 +222,19 @@ public class UserInfoActivity extends Activity {
         });
     }
 
-//    @Override
-//    protected void initData() {
-//
-//        mUpgrade.setOnClickListener(this);
-//        mUserIconImageView.setOnClickListener(this);
-//
-//        //获取用户头像
-//        File file = new File("storage/sdcard1/temp00.jpg");
-//        if(file.exists()) {
-//            Bitmap mBit = BitmapUtils.getRoundBitmap(BitmapUtils.getBitmap(mCameraAddress, mContext));
-//            mUserIconImageView.setImageBitmap(mBit);
-//        }
-//    }
+    @Override
+    protected void initData() {
+
+        mUpgrade.setOnClickListener(this);
+        mUserIconImageView.setOnClickListener(this);
+
+        //获取用户头像
+        File file = new File("storage/sdcard1/temp00.jpg");
+        if(file.exists()) {
+            Bitmap mBit = BitmapUtils.getRoundBitmap(BitmapUtils.getBitmap(mCameraAddress, mContext));
+            mUserIconImageView.setImageBitmap(mBit);
+        }
+    }
 //
 //
     @Override
