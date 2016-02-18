@@ -30,21 +30,18 @@
             <com.example.base.widget.MyLinearLayout
                 android:id="@+id/mainFragmentMessage"
                 style="@style/mainFragmentRadioButton"
-                android:layout_margin="@dimen/fifteen"
                 app:backgroup="@drawable/ic_yuan"
                 app:text="@string/message" />
 
             <com.example.base.widget.MyLinearLayout
                 android:id="@+id/mainFragmentGroup"
                 style="@style/mainFragmentRadioButton"
-                android:layout_margin="@dimen/fifteen"
                 app:backgroup="@drawable/ic_yuan"
                 app:text="@string/camera" />
 
             <com.example.base.widget.MyLinearLayout
                 android:id="@+id/mainFragmentMy"
                 style="@style/mainFragmentRadioButton"
-                android:layout_margin="@dimen/fifteen"
                 app:backgroup="@drawable/ic_yuan"
                 app:text="@string/my" />
         </LinearLayout>
@@ -52,7 +49,7 @@
 
     <ListView
         android:id="@+id/actbarListView"
-        android:layout_width="@dimen/one_hundred_and_fifty"
+        android:layout_width="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/fifteen"
         android:layout_marginRight="@dimen/nine"

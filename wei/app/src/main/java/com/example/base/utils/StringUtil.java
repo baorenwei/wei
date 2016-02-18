@@ -7,6 +7,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -92,6 +96,36 @@ public class StringUtil {
         ByteArrayInputStream bas = new ByteArrayInputStream(b);
         Bitmap bitmap = BitmapFactory.decodeStream(bas);
         return bitmap;
+    }
+
+    //file转byte[]
+    public static byte[] FileTobyte(String filePath)
+    {
+        byte[] buffer = null;
+        try
+        {
+            File file = new File(filePath);
+            FileInputStream fis = new FileInputStream(file);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            byte[] b = new byte[1024];
+            int n;
+            while ((n = fis.read(b)) != -1)
+            {
+                bos.write(b, 0, n);
+            }
+            fis.close();
+            bos.close();
+            buffer = bos.toByteArray();
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return buffer;
     }
 
 }

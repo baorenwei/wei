@@ -13,11 +13,13 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -30,14 +32,15 @@ import android.widget.Toast;
 import com.example.administrator.bao.R;
 import com.example.base.base.BaseFragmentActivity;
 import com.example.base.utils.LogUtils;
+import com.example.base.utils.QueueUtils;
 import com.example.base.widget.MyLinearLayout;
-import com.videogo.constant.Constant;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import adapter.ActionBarListViewAdapter;
 import adapter.MainFragmentViewPagerAdapter;
 import camera.CameraBroadcats;
 import fragment.FirstFragment;
@@ -62,6 +65,7 @@ public class MainFragmentActivity extends BaseFragmentActivity implements View.O
     private ListView mActionBarListView;
 
     Boolean mIsShow = false;  //ListView是否显示
+    private WindowManager.LayoutParams lp;   //窗口变暗
 
     @Override
     protected int initLayout() {
@@ -89,9 +93,16 @@ public class MainFragmentActivity extends BaseFragmentActivity implements View.O
         mMainFragmentMy.setOnClickListener(this);
         mMainFragmentMessage.setOnClickListener(this);
 
+        //动态设置ActionBarListView的宽
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(getDisplayMetrics(1)/3, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        params.setMargins(0, 15, 20, 0);
+        mActionBarListView.setLayoutParams(params);
+
         initPagerAdapter();
         addListViewItem();
 
+        QueueUtils.soft();
 
     }
 
@@ -107,7 +118,7 @@ public class MainFragmentActivity extends BaseFragmentActivity implements View.O
         Intent intent = new Intent();
         mCameraBroadcats = new CameraBroadcats();
         IntentFilter filter = new IntentFilter();
-        filter.addAction(Constant.OAUTH_SUCCESS_ACTION);
+//        filter.addAction(Constant.OAUTH_SUCCESS_ACTION);
         registerReceiver(mCameraBroadcats, filter);
         mCameraBroadcats.onReceive(this, intent);
     }
@@ -166,26 +177,14 @@ public class MainFragmentActivity extends BaseFragmentActivity implements View.O
     }
 
     private void addListViewItem() {
-        String[] titles = {"title1", "title2", "title3", "title4", "title5", "title6"};
-        int[] drawableIds = {R.drawable.ic_yuan, R.drawable.ic_yuan, R.drawable.ic_yuan,
-                R.drawable.ic_yuan, R.drawable.ic_yuan, R.drawable.ic_yuan};
 
-        setListViewItem(drawableIds, titles);
-    }
-
-    //    设置ListView Item的数据
-    public void setListViewItem(int[] drawable, String[] titles) {
-        List<Map<String, Object>> mListViewList = new ArrayList<>();
-        Map<String, Object> map = new HashMap<>();
-        for (int i = 0; i < titles.length; i++) {
-            map.put("title", titles[i]);
-            map.put("drawable", drawable[i]);
-            mListViewList.add(map);
+        ActionBarListViewAdapter mAdapter = new ActionBarListViewAdapter(mContext);
+        List<Integer> mListViewList = new ArrayList<>();
+        for (int i = 0; i < 1; i++) {
+            mListViewList.add(i);
         }
-        SimpleAdapter adapter = new SimpleAdapter(this, mListViewList, R.layout.widget_action_bar_listview_item,
-                new String[]{"title", "drawable"},
-                new int[]{R.id.actionBarTextView, R.id.actionBarImageView});
-        mActionBarListView.setAdapter(adapter);
+        mAdapter.setList(mListViewList);
+        mActionBarListView.setAdapter(mAdapter);
         mActionBarListView.setOnItemClickListener(this);
     }
 
@@ -200,7 +199,7 @@ public class MainFragmentActivity extends BaseFragmentActivity implements View.O
     }
 
     //隐藏ListView
-    public void gomeListView() {
+    public  void gomeListView() {
         AnimationSet set = new AnimationSet(true);
         ScaleAnimation scaleAnimation = new ScaleAnimation(1f, 0, 1f, 0, Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0);
         scaleAnimation.setDuration(500);
@@ -213,7 +212,9 @@ public class MainFragmentActivity extends BaseFragmentActivity implements View.O
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+        if (position == 0){
             gomeListView();
+        }
     }
 
     @Override
@@ -225,5 +226,16 @@ public class MainFragmentActivity extends BaseFragmentActivity implements View.O
                 break;
         }
         return true;
+    }
+
+    public static void getListViewItem(int item){
+        switch (item){
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+        }
     }
 }

@@ -1,38 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/userIconRelativeLayout"
+        style="@style/view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/one_hundred_and_fifty"
-        style="@style/view">
+        >
 
-    <ImageView
-        android:id="@+id/userIconImageView"
-        android:layout_width="@dimen/one_hundred"
-        android:layout_height="@dimen/one_hundred"
-        android:layout_centerInParent="true"
-        android:src="@drawable/ic_yuan"
-        />
+        <ImageView
+            android:id="@+id/userIconImageView"
+            android:layout_width="@dimen/one_hundred"
+            android:layout_height="@dimen/one_hundred"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_yuan" />
 
     </RelativeLayout>
-    <LinearLayout
-        android:id="@+id/upgrade"
+
+    <com.example.base.widget.RefreshableView
+        android:id="@+id/refreshable_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/forty"
-        style="@style/view">
+        android:layout_height="match_parent">
+
+        <!--<ListView-->
+            <!--android:id="@+id/list_view"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="fill_parent" >-->
+        <!--</ListView>-->
+        <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+        android:id="@+id/upgrade"
+        style="@style/view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/forty">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/upgrade"/>
-    </LinearLayout>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/upgrade" />
+        </LinearLayout>
 
-    <Button
+        <LinearLayout
+        style="@style/view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/forty">
+        <Button
         android:layout_width="match_parent"
         android:layout_height="@dimen/forty"
-        android:text="@string/action_quit"
-        style="@style/view"/>
+        android:layout_gravity="center"
+        android:text="@string/action_quit" />
+        </LinearLayout>
+
+        <LinearLayout
+        style="@style/view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/forty">
+        <Button
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/forty"
+        android:layout_gravity="center"
+        android:text="@string/action_quit" />
+        </LinearLayout>
+
+        <LinearLayout
+        style="@style/view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/forty">
+        <Button
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/forty"
+        android:layout_gravity="center"
+        android:text="@string/action_quit" />
+        </LinearLayout>
+        </LinearLayout>
+        </ScrollView>
+    </com.example.base.widget.RefreshableView>
+
 </LinearLayout>

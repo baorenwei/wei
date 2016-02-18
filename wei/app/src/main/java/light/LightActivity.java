@@ -148,6 +148,7 @@ public class LightActivity extends BaseFragmentActivity {
     @Override
     public void onRefresh(PullToRefreshBase refreshView) {
         super.onRefresh(refreshView);
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

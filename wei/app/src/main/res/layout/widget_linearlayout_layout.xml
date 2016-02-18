@@ -5,8 +5,8 @@
 
     <ImageView
         android:id="@+id/linImageView"
-        android:layout_width="@dimen/eighteen"
-        android:layout_height="@dimen/eighteen"
+        android:layout_width="@dimen/thirty"
+        android:layout_height="@dimen/thirty"
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true"/>
 

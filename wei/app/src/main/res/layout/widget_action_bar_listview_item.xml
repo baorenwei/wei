@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="@dimen/fifty">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/action_one"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/thirty">
 
     <ImageView
         android:id="@+id/actionBarImageView"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="@dimen/eighteen"
+        android:layout_height="@dimen/eighteen"
         android:layout_marginLeft="@dimen/twelve"
         android:layout_centerInParent="true"
+        android:background="@drawable/ic_yuan"
         android:layout_alignParentLeft="true"
         />
 
@@ -18,6 +25,52 @@
         android:layout_alignParentRight="true"
         android:layout_centerInParent="true"
         android:layout_marginRight="@dimen/twelve"
-        android:text="烧一烧"
+        android:text="扫一扫"
         />
-</RelativeLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/action_two"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/thirty">
+
+    <ImageView
+        android:layout_width="@dimen/eighteen"
+        android:layout_height="@dimen/eighteen"
+        android:layout_marginLeft="@dimen/twelve"
+        android:layout_centerInParent="true"
+        android:background="@drawable/indicator_bg_bottom"
+        android:layout_alignParentLeft="true"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:layout_marginRight="@dimen/twelve"
+        android:text="选择"
+        />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/action_three"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/thirty">
+    <ImageView
+        android:layout_width="@dimen/eighteen"
+        android:layout_height="@dimen/eighteen"
+        android:layout_marginLeft="@dimen/twelve"
+        android:layout_centerInParent="true"
+        android:background="@drawable/indicator_arrow"
+        android:layout_alignParentLeft="true"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:layout_marginRight="@dimen/twelve"
+        android:text="确定"
+        />
+    </RelativeLayout>
+</LinearLayout>

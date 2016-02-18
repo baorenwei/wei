@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -26,7 +27,8 @@ import cn.smssdk.gui.GroupListView;
  *
  */
 public abstract class BaseFragmentActivity extends BaseActivity implements View.OnClickListener ,
-        View.OnLongClickListener,AdapterView.OnItemSelectedListener,AdapterView.OnItemClickListener,Runnable,AbsListView.OnScrollListener, PullToRefreshBase.OnRefreshListener,RadioGroup.OnCheckedChangeListener {
+        View.OnLongClickListener,AdapterView.OnItemSelectedListener,AdapterView.OnItemClickListener,Runnable,
+        AbsListView.OnScrollListener, PullToRefreshBase.OnRefreshListener,RadioGroup.OnCheckedChangeListener, View.OnKeyListener {
 
     private SharedPreferences.Editor mEditor;
     private SharedPreferences mSharedPreferences;
@@ -125,6 +127,17 @@ public abstract class BaseFragmentActivity extends BaseActivity implements View.
         
     }
 
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+    }
+
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+        return false;
+    }
+
+
     //设置Notifiction
     public void setmNotifiction(Context context, Class<?> cls,int drawable,String title,int layout,int image,String content,String time){
 
@@ -161,8 +174,4 @@ public abstract class BaseFragmentActivity extends BaseActivity implements View.
         mDialog.dismiss();
     }
 
-    @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
-
-    }
 }

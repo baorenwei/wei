@@ -11,9 +11,11 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.example.base.base.Conn;
+import com.example.base.utils.EncryptionUtils;
 import com.example.base.utils.HttpUtil;
 import com.example.base.utils.HttpUtils;
 import com.example.base.utils.LogUtils;
+import com.example.base.utils.StringUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,18 +67,25 @@ public class LightDao {
 //        parent.put("mobile", "13316584270");
 //        parent.put("userName", "aaa");
 //        parent.put("password", "123456");
-//        parent.put("client_id", "1");
-//        parent.put("client_secret", "1");
+//        parent.put("registerCity", "深圳");
 //        parent.put("grant_type", "1");
-        parent.put("access_token", "7b38c6c5-b5e4-492b-a699-c7d3c0eaf58f");
-//        parent.put("access_token", "4716663d-78c7-43c2-ab50-e7331520892e");
+        parent.put("access_token", "4716663d-78c7-43c2-ab50-e7331520892e");
+//        parent.put("mobile", "15986773816");
         File file1 = new File(Uri.parse("file:///storage/sdcard1/temp00.jpg").getPath());
-        LogUtils.showLogI(file1.getName() + "");
+        LogUtils.showLogI(file1.exists()+"");
         file.put(file1.getName(), file1);
+
+        Map<String, byte[]> by = new HashMap<>();
+
         try {
-            String json = HttpUtil.postType(Conn.UPDATE_PICTURE, parent, file, "POST");
+//            String json = HttpUtil.postType(Conn.USER_LOGIN, parent, null, "POST");
 //            JSONObject obj = new JSONObject(json);
-            LogUtils.showLogI(json+"");
+//            LogUtils.showLogI(json + "");
+
+//            HttpUtil.postFile(Conn.UPDATE_PICTURE, parent, by);
+
+              String str = EncryptionUtils.getMD5String("123456");
+            LogUtils.showLogI(str);
 //            String access_token = obj.getString("message");
 //            LogUtils.showLogI(access_token + "");
         } catch (Exception e) {

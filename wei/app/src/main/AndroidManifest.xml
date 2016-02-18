@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.administrator.bao" >
+    package="com.example.administrator.bao">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -43,22 +52,29 @@
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
     <uses-permission android:name="com.android.launcher.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
+        android:name="com.example.base.base.BaseApplication"
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name="com.example.base.base.BaseApplication"
         android:supportsRtl="true"
-        android:hardwareAccelerated="false"
-        android:theme="@style/AppTheme" >
-        <activity
-        android:name="light.LightActivity"
-            android:label="@string/app_name"
-            android:theme="@style/ActivityTheme_Light" >
+        android:theme="@style/AppTheme"
+    >
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="KdX4KffmvpGbU89ZvlqZcjzp" />
 
+
+        <activity
+            android:name="activity.UserInfoActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -66,50 +82,37 @@
         </activity>
 
         <!-- 窗口Activity -->
-        <activity android:name="activity.WindowActivity"
-            android:theme="@style/windowActivity">
-        </activity>
+        <activity
+            android:name="activity.WindowActivity"
+            android:theme="@style/windowActivity"></activity>
 
         <!-- 窗口ListViewActivity -->
-        <activity android:name="activity.WindowListView"
-            >
-        </activity>
+        <activity android:name="activity.WindowListView"></activity>
 
-        <activity android:name="fragment.FirstFragment"
-            >
-        </activity>
+         <!--WebView Activity -->
+        <activity android:name="web.WebActivity"></activity>
 
-        <activity android:name="fragment.SecondFragment"
-            >
-        </activity>
+        <activity android:name="fragment.FirstFragment"></activity>
 
-        <activity android:name="fragment.ThredFragment"
-            >
-        </activity>
+        <activity android:name="fragment.SecondFragment"></activity>
+
+        <activity android:name="fragment.ThredFragment"></activity>
 
 
         <!-- 灯 -->
         <provider
-            android:authorities="com.emample.light.provider"
-            android:name="light.LigthProvider"></provider>
+            android:name="light.LigthProvider"
+            android:authorities="com.emample.light.provider"></provider>
 
         <!-- 门-->
         <provider
-            android:authorities="com.emample.door.provider"
-            android:name="door.DoorProvider"></provider>
+            android:name="door.DoorProvider"
+            android:authorities="com.emample.door.provider"></provider>
 
         <!-- 二维码扫描-->
         <activity
             android:name="com.google.zxing.client.android.ScanQRActivity"
-            android:screenOrientation="portrait"
-            />
-
-        <!-- 摄像头列表-->
-        <activity
-            android:name="camera.CameraListViewActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
 
     </application>
 
