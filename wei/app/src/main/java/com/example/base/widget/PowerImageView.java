@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.example.administrator.bao.R;
+import com.example.base.utils.LogUtils;
 
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -55,7 +56,7 @@ public class PowerImageView extends ImageView implements View.OnClickListener {
     /**
      * 是否允许自动播放
      */
-    private boolean isAutoPlay;
+    private boolean isAutoPlay ;
 
     /**
      * PowerImageView构造函数。
@@ -202,5 +203,10 @@ public class PowerImageView extends ImageView implements View.OnClickListener {
             }
         }
         return 0;
+    }
+
+    //动态设置gid图片是否需要播放
+    public void isPlay(boolean is){
+        isPlaying = is;
     }
 }

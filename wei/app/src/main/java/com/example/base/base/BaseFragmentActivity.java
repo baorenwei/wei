@@ -16,6 +16,7 @@ import android.widget.RadioGroup;
 import android.widget.RemoteViews;
 
 import com.example.administrator.bao.R;
+import com.example.base.widget.MyDialog;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 
 import activity.WindowActivity;
@@ -33,6 +34,7 @@ public abstract class BaseFragmentActivity extends BaseActivity implements View.
     private SharedPreferences.Editor mEditor;
     private SharedPreferences mSharedPreferences;
     private ProgressDialog mDialog;
+    public MyDialog dialog = null;  //自定义Dialog
 
     public String LOGIN = "1";
     public String UN_LOGIN = "2";
@@ -41,10 +43,16 @@ public abstract class BaseFragmentActivity extends BaseActivity implements View.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (dialog == null) {
+            dialog = new MyDialog(this);
+        }
+
         setContentView(initLayout());
 
         initView();
         initData();
+
     }
 
     protected abstract int initLayout();

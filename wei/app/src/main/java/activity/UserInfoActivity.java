@@ -19,6 +19,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.Interpolator;
 import android.view.animation.TranslateAnimation;
@@ -36,6 +37,7 @@ import com.example.base.utils.FileUtils;
 import com.example.base.utils.LogUtils;
 import com.example.base.utils.LruCacheUtils;
 import com.example.base.utils.ThreadPollUtils;
+import com.example.base.widget.MyDialog;
 import com.example.base.widget.RefreshableView;
 
 import java.io.File;
@@ -94,9 +96,64 @@ public class UserInfoActivity extends BaseFragmentActivity {
         refreshableView.setOnRefreshListener(new RefreshableView.PullToRefreshListener() {
             @Override
             public void onRefresh() {
+                try {
+                    refreshableView.isPlay(true);
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                refreshableView.isPlay(false);
                 refreshableView.finishRefreshing();
             }
         }, 0);
+    }
+
+    @Override
+    protected void initData() {
+
+        mUpgrade.setOnClickListener(this);
+        mUserIconImageView.setOnClickListener(this);
+
+        //获取用户头像
+        File file = new File("storage/sdcard1/temp00.jpg");
+        if(file.exists()) {
+            Bitmap mBit = BitmapUtils.getRoundBitmap(BitmapUtils.getBitmap(mCameraAddress, mContext));
+            mUserIconImageView.setImageBitmap(mBit);
+        }
+
+
+    }
+    //
+//
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //开启用户头像动画
+        mHandler.postAtTime(runn, 1000);
+//        showDialog();
+        dialog.show();
+
+}
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mHandler.removeCallbacks(runn);
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+
+        switch (v.getId()) {
+            case R.id.upgrade:
+                new UpdateActivity(this);
+                break;
+            case R.id.userIconImageView:
+                showDialog();
+                break;
+        }
     }
 
 
@@ -110,7 +167,7 @@ public class UserInfoActivity extends BaseFragmentActivity {
     private void toLeft(){
         TranslateAnimation animation = new TranslateAnimation
                 (5,-5,0,0);
-        animation.setDuration(300);
+        animation.setDuration(200);
         mUserIconImageView.startAnimation(animation);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -132,7 +189,7 @@ public class UserInfoActivity extends BaseFragmentActivity {
     private void  fromToLeft(){
         TranslateAnimation animation = new TranslateAnimation
                 (5,-5,0,0);
-        animation.setDuration(300);
+        animation.setDuration(200);
         mUserIconImageView.startAnimation(animation);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -155,7 +212,7 @@ public class UserInfoActivity extends BaseFragmentActivity {
     private void to(){
         TranslateAnimation animation = new TranslateAnimation
                 (-5,0,0,0);
-        animation.setDuration(300);
+        animation.setDuration(200);
         mUserIconImageView.startAnimation(animation);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -179,7 +236,7 @@ public class UserInfoActivity extends BaseFragmentActivity {
     private void  fromToRight(){
         TranslateAnimation animation = new TranslateAnimation
                 (-5,5,0,0);
-        animation.setDuration(300);
+        animation.setDuration(200);
         mUserIconImageView.startAnimation(animation);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -202,7 +259,7 @@ public class UserInfoActivity extends BaseFragmentActivity {
     private void toRight(){
         TranslateAnimation animation = new TranslateAnimation
                 (0,5,0,0);
-        animation.setDuration(300);
+        animation.setDuration(200);
         mUserIconImageView.startAnimation(animation);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -222,48 +279,6 @@ public class UserInfoActivity extends BaseFragmentActivity {
         });
     }
 
-    @Override
-    protected void initData() {
-
-        mUpgrade.setOnClickListener(this);
-        mUserIconImageView.setOnClickListener(this);
-
-        //获取用户头像
-        File file = new File("storage/sdcard1/temp00.jpg");
-        if(file.exists()) {
-            Bitmap mBit = BitmapUtils.getRoundBitmap(BitmapUtils.getBitmap(mCameraAddress, mContext));
-            mUserIconImageView.setImageBitmap(mBit);
-        }
-    }
-//
-//
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //开启用户头像动画
-        mHandler.postAtTime(runn, 1000);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mHandler.removeCallbacks(runn);
-    }
-
-    //
-//    @Override
-//    public void onClick(View v) {
-//        super.onClick(v);
-//
-//        switch (v.getId()) {
-////            case R.id.upgrade:
-////                new UpdateActivity(this);
-////                break;
-//            case R.id.userIconImageView:
-//                showDialog();
-//                break;
-//        }
-//    }
 //
 //    public void showDialog() {
 //        AlertDialog.Builder builder = new AlertDialog.Builder(this);

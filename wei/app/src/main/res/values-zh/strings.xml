@@ -10,7 +10,7 @@
     <string name="register_send_fail">send verification code fail,please check your phone number</string>
     <string name="register_code_error">verification code error</string>
     <!-- 对话框 -->
-    <string name="in_the_effort">努力中获取中 ...</string>
+    <string name="in_the_effort">努力获取中 ...</string>
     <!-- ListView-->
     <string name="delete">删除</string>
     <string name="stick">置顶</string>
