@@ -16,7 +16,7 @@ import com.example.administrator.bao.R;
  */
 public class MyDialog extends Dialog {
 
-//    TextView mContentTextView;
+    TextView mContentTextView;
 
     public MyDialog(Context context) {
         super(context);
@@ -28,11 +28,11 @@ public class MyDialog extends Dialog {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.widget_dialog_layout);
 
-//        mContentTextView = (TextView)findViewById(R.id.contentTextView);
+        mContentTextView = (TextView)findViewById(R.id.contentTextView);
     }
 
     public void setContent(int content){
-//        mContentTextView.setText(content);
+        mContentTextView.setText(content);
     }
 
 }
